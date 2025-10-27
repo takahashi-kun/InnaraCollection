@@ -39,11 +39,11 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     // PRODUCT
     Route::prefix('product')->controller(productController::class)->group(function () {
         Route::get('/', 'index')->name('admin.product');
-        Route::get('/create', 'create')->name('admin.product.create');
-        Route::post('/', 'store')->name('admin.product.store');
-        Route::get('/{product}/edit', 'edit')->name('admin.product.edit');
-        Route::put('/{product}', 'update')->name('admin.product.update');
-        Route::delete('/{product}', 'destroy')->name('admin.product.destroy');
+        Route::get('/create', [productController::class, 'create'])->name('admin.product.create');
+        Route::post('/', [productController::class, 'store'])->name('admin.product.store'); 
+        Route::get('/{product}/edit', [productController::class, 'edit'])->name('admin.product.edit');
+        Route::put('/{product}', [productController::class, 'update'])->name('admin.product.update');
+        Route::delete('/{product}', [productController::class, 'destroy'])->name('admin.product.destroy');
     });
 
     // KOMPONEN

@@ -14,10 +14,12 @@ class product extends Model
     protected $fillable = [
         'nama_produk',
         'deskripsi',
+        'stok',
         'harga',
     ];
     protected $casts = [
         'harga' => 'decimal:2',
+        'stok' => 'integer',
     ];
 
     public function kastemisasis()

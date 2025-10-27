@@ -22,7 +22,7 @@
                 <!-- Form kostumisasi -->
                 {{-- <form class="tf-section-2 form-add-product" method="POST" action="{{ route('admin.customization.store') }}"> --}}
                 <form class="tf-section-2 form-add-product" style="grid-template-columns: 1fr;" method="POST"
-                    action="{{ route('products.kastemisasi.store') }}">
+                    action="{{ route('admin.product.store') }}">
                     @csrf
 
                     <div class="wg-box">
@@ -118,9 +118,9 @@
                                     <td>{{ $product->warna }}</td>
                                     <td>Rp {{ number_format($product->harga_tambahan, 0, ',', '.') }}</td>
                                     <td>
-                                        <a href="{{ route('products.kastemisasi.edit', $product->id) }}"
+                                        <a href="{{ route('admin.product.edit', $product->id_produk) }}"
                                             class="btn btn-sm btn-warning">Edit</a>
-                                        <form action="{{ route('products.kastemisasi.destroy', $product->id) }}"
+                                        <form action="{{ route('admin.product.destroy', $product->id_produk) }}"
                                             method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')

@@ -34,11 +34,11 @@ class productKastemisasiController extends Controller
             'warna' => 'required|string',
             'harga_tambahan' => 'nullable|numeric',
         ]);
-
-        productKastemisasi::create($request->only([
+        $data = $request->only([
             'produk_id','jenis_bahan','ukuran','ketebalan_bahan','bahan_sablon','warna','harga_tambahan'
-        ]));
+        ]);
 
+        productKastemisasi::create($data);
         return redirect()->back()->with('success','Kostumisasi berhasil disimpan.');
     }
 
@@ -59,9 +59,11 @@ class productKastemisasiController extends Controller
             'warna' => 'required|string',
             'harga_tambahan' => 'nullable|integer',
         ]);
+        $data = $request->only([
+            'jenis_bahan','ukuran','ketebalan_bahan','bahan_sablon','warna','harga_tambahan'
+        ]);
 
-        $productKastemisasi->update($request->all());
-
+        $productKastemisasi->update($data);
         return redirect()->route('admin.product.kastemisasi')->with('success', 'Kostumisasi berhasil diperbarui.');
     }
 

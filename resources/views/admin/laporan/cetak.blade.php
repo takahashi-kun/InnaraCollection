@@ -116,7 +116,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($productOriginal ?? [] as $idx => $p)
+                            @forelse($product ?? [] as $idx => $p)
                                 <tr>
                                     <td>{{ $idx + 1 }}</td>
                                     <td>{{ $p->nama_produk }}</td>
