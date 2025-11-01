@@ -19,4 +19,5 @@ class jasa extends Model
     protected $casts = [
         'harga_jasa' => 'decimal:2',
     ];
+
 }

@@ -1,12 +1,17 @@
 @extends('user.layouts.accounts')
 @section('title', 'Account Detail')
 @section('content')
-    <div class="col-lg-9">
+
         <div class="page-content my-account__edit">
             <div class="my-account__edit-form">
                 <form name="account_edit_form" action="#" method="POST" class="needs-validation" novalidate="">
                     @csrf
                     <div class="row">
+                        <div class="col-md-12">
+                            <div class="my-3">
+                                <h5 class="text-uppercase mb-0">Information</h5>
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="form-floating my-3">
                                 <input type="text" class="form-control" placeholder="Full Name" name="name"
@@ -23,9 +28,9 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-floating my-3">
-                                <input type="email" class="form-control" placeholder="Email Address" name="email"
+                                <input type="text" class="form-control" placeholder="Bio Address" name="bio"
                                     value="" required="">
-                                <label for="account_email">Email Address</label>
+                                <label for="bio">Bio</label>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -65,9 +70,9 @@
                 </form>
             </div>
         </div>
-    </div>
-    </div>
+        
 </section>
+
 @endsection
 
 @section('script')

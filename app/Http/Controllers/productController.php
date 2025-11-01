@@ -33,7 +33,7 @@ class productController extends Controller
             'deskripsi'   => 'required|string',
             'harga'       => 'required|numeric',
             'stok'        => 'required|integer',
-            'gambar'      => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10800',
+            'gambar'      => 'nullable|image|mimes:jpeg,png,jpg,svg|max:10800',
         ]);
 
         $data = $request->only('nama_produk', 'deskripsi', 'harga', 'stok');
@@ -58,7 +58,7 @@ class productController extends Controller
             'deskripsi'   => 'required|string',
             'harga'       => 'required|numeric',
             'stok'        => 'required|integer',
-            'gambar'      => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10800',
+            'gambar'      => 'nullable|image|mimes:jpeg,png,jpg,svg|max:10800',
         ]);
 
         // ambil semua data yang boleh diupdate

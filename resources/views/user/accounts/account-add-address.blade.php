@@ -1,7 +1,6 @@
 @extends('user.layouts.accounts')
 @section('title', 'Add Address')
 @section('content')
-<div class="col-lg-9">
     <div class="page-content my-account__address">
         <div class="row">
             <div class="col-6">
@@ -95,7 +94,5 @@
                 </div>
             </div>
         </div>
-        <hr>
     </div>
-</div>
 @endsection

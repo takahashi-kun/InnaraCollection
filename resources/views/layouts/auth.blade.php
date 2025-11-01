@@ -539,8 +539,8 @@
             </section>
         </main>
 
-
         <hr class="mt-5 text-secondary" />
+
         <footer class="footer footer_type_2" >
             <div class="footer-middle container">
                 <div class="row row-cols-lg-5 row-cols-2">
@@ -601,65 +601,50 @@
                     </div>
 
                     <div class="footer-column footer-menu mb-4 mb-lg-0">
-                        <h6 class="sub-menu__title text-uppercase">Company</h6>
-                        <ul class="sub-menu__list list-unstyled">
-                            <li class="sub-menu__item"><a href="about-2.html" class="menu-link menu-link_us-s">About
-                                    Us</a></li>
-                            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Careers</a>
-                            </li>
-                            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Affiliates</a>
-                            </li>
-                            <li class="sub-menu__item"><a href="blog_list1.html"
-                                    class="menu-link menu-link_us-s">Blog</a></li>
-                            <li class="sub-menu__item"><a href="contact-2.html" class="menu-link menu-link_us-s">Contact
-                                    Us</a></li>
-                        </ul>
+                    <h6 class="sub-menu__title text-uppercase">Company</h6>
+                    <ul class="sub-menu__list list-unstyled">
+                        <li class="sub-menu__item"><a href="about-2.html" class="menu-link menu-link_us-s">About Us</a></li>
+                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Careers</a></li>
+                        {{-- <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Affiliates</a></li> --}}
+                        {{-- <li class="sub-menu__item"><a href="blog_list1.html" class="menu-link menu-link_us-s">Blog</a></li> --}}
+                        <li class="sub-menu__item"><a href="contact-2.html" class="menu-link menu-link_us-s">Contact Us</a></li>
+                    </ul>
                     </div>
 
                     <div class="footer-column footer-menu mb-4 mb-lg-0">
-                        <h6 class="sub-menu__title text-uppercase">Shop</h6>
-                        <ul class="sub-menu__list list-unstyled">
-                            <li class="sub-menu__item"><a href="shop2.html" class="menu-link menu-link_us-s">New
-                                    Arrivals</a></li>
-                            <li class="sub-menu__item"><a href="shop3.html"
-                                    class="menu-link menu-link_us-s">Accessories</a></li>
-                            <li class="sub-menu__item"><a href="shop4.html" class="menu-link menu-link_us-s">Men</a></li>
-                            <li class="sub-menu__item"><a href="shop5.html" class="menu-link menu-link_us-s">Women</a>
-                            </li>
-                            <li class="sub-menu__item"><a href="shop1.html" class="menu-link menu-link_us-s">Shop All</a>
-                            </li>
-                        </ul>
+                    <h6 class="sub-menu__title text-uppercase">Shop</h6>
+                    <ul class="sub-menu__list list-unstyled">
+                        <li class="sub-menu__item"><a href="shop2.html" class="menu-link menu-link_us-s">New Arrivals</a></li>
+                        {{-- <li class="sub-menu__item"><a href="shop3.html" class="menu-link menu-link_us-s">Accessories</a></li>
+                        <li class="sub-menu__item"><a href="shop4.html" class="menu-link menu-link_us-s">Men</a></li>
+                        <li class="sub-menu__item"><a href="shop5.html" class="menu-link menu-link_us-s">Women</a></li> --}}
+                        <li class="sub-menu__item"><a href="shop1.html" class="menu-link menu-link_us-s">Shop All</a></li>
+                    </ul>
                     </div>
 
                     <div class="footer-column footer-menu mb-4 mb-lg-0">
-                        <h6 class="sub-menu__title text-uppercase">Help</h6>
-                        <ul class="sub-menu__list list-unstyled">
-                            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Customer
-                                    Service</a></li>
-                            <li class="sub-menu__item"><a href="account_dashboard.html"
-                                    class="menu-link menu-link_us-s">My Account</a>
-                            </li>
-                            <li class="sub-menu__item"><a href="store_location.html"
-                                    class="menu-link menu-link_us-s">Find a Store</a>
-                            </li>
-                            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Legal &
-                                    Privacy</a></li>
-                            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Gift Card</a>
-                            </li>
-                        </ul>
+                    <h6 class="sub-menu__title text-uppercase">Help</h6>
+                    <ul class="sub-menu__list list-unstyled">
+                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Customer Service</a></li>
+                        <li class="sub-menu__item"><a href="account_dashboard.html" class="menu-link menu-link_us-s">My Account</a>
+                        </li>
+                        {{-- <li class="sub-menu__item"><a href="store_location.html" class="menu-link menu-link_us-s">Find a Store</a>
+                        </li> --}}
+                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Legal & Privacy</a></li>
+                        {{-- <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Gift Card</a></li> --}}
+                    </ul>
                     </div>
 
-                    <div class="footer-column footer-menu mb-4 mb-lg-0">
-                        <h6 class="sub-menu__title text-uppercase">Categories</h6>
-                        <ul class="sub-menu__list list-unstyled">
-                            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Shirts</a></li>
-                            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Jeans</a></li>
-                            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Shoes</a></li>
-                            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Bags</a></li>
-                            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Shop All</a>
-                            </li>
-                        </ul>
-                    </div>
+                    {{-- <div class="footer-column footer-menu mb-4 mb-lg-0">
+                    <h6 class="sub-menu__title text-uppercase">Categories</h6>
+                    <ul class="sub-menu__list list-unstyled">
+                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Shirts</a></li>
+                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Jeans</a></li>
+                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Shoes</a></li>
+                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Bags</a></li>
+                        <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Shop All</a></li>
+                    </ul>
+                    </div> --}}
                 </div>
             </div>
 
@@ -674,7 +659,6 @@
                 </div>
             </div>
         </footer>
-
 
         <footer class="footer-mobile container w-100 px-5 d-md-none bg-body">
             <div class="row text-center">

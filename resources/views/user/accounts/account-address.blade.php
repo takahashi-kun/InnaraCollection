@@ -1,7 +1,7 @@
 @extends('user.layouts.accounts')
 @section('title', 'Address')
+@section('page_title', 'Addresses')
 @section('content')
-<div class="col-lg-9">
     <div class="page-content my-account__address">
         <div class="row">
             <div class="col-6">
@@ -32,5 +32,14 @@
             <hr>
         </div>
     </div>
-</div>
+    
+@endsection
+
+@section('script')
+    <script src="{{ asset('build/assets/js/plugins/jquery.min.js') }}"></script>
+    <script src="{{ asset('build/assets/js/plugins/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('build/assets/js/plugins/bootstrap-slider.min.js') }}"></script>
+    <script src="{{ asset('build/assets/js/plugins/swiper.min.js') }}"></script>
+    <script src="{{ asset('build/assets/js/plugins/countdown.js') }}"></script>
+    <script src="{{ asset('build/assets/js/theme.js') }}"></script>
 @endsection

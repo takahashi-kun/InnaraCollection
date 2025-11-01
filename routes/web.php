@@ -23,7 +23,7 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::prefix('order')->group(function () {
         Route::get('/', fn() => view('admin.order.orders'))->name('admin.orders');
         Route::get('/detail', fn() => view('admin.order.order-detail'))->name('admin.order-detail');
-        Route::get('/tracking', fn() => view('admin.order.order-tracking'))->name('admin.order-tracking');
+        Route::get('/tracking', fn() => view('admin.order.orders-tracking'))->name('admin.order-tracking');
     });
 
     // PRODUCT KOSTUMISASI
@@ -115,22 +115,26 @@ Route::middleware(['auth', 'isCustomer'])->group(function () {
     });
 
     Route::get('/user/dashboard', function () {
+        return view('user.accounts.account-dashboard');
+    })->name('account-dashboard');
+
+    Route::get('/user/account-detail', function () {
         return view('user.accounts.account-detail');
     })->name('account-detail');
 
-    Route::get('/user/dashboard/account/account-address', function () {
+    Route::get('/user/account/account-address', function () {
         return view('user.accounts.account-address');
     })->name('account-address');
 
-    Route::get('/user/dashboard/account/account-add-address', function () {
+    Route::get('/user/account/account-add-address', function () {
         return view('user.accounts.account-add-address');
     })->name('account-add-address');
 
-    Route::get('/user/dashboard/account/account-orders', function () {
+    Route::get('/user/account/account-orders', function () {
         return view('user.accounts.account-orders');
     })->name('account-orders');
 
-    Route::get('/user/dashboard/account/account-orders-detail', function () {
+    Route::get('/user/account/account-orders-detail', function () {
         return view('user.accounts.account-orders-detail');
     })->name('account-order-detail');
 });

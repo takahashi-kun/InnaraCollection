@@ -50,6 +50,6 @@ class product extends Model
             ->with('sablon')
             ->first()
             ->sablon
-            ->gambar ?? null;
+            ->gambar_sablon ?? null;
     }
 }

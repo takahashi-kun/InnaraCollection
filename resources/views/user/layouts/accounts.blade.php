@@ -507,30 +507,57 @@
         </div>
     </header>
 
-    <main class="pt-90">
-        <div class="mb-4 pb-4"></div>
-        <section class="my-account container">
-            <h2 class="page-title">Account Details</h2>
-            <div class="row">
-                <div class="col-lg-3">
-                    <ul class="account-nav">
-                        <li><a href="my-account.html" class="menu-link menu-link_us-s menu-link_active">Dashboard</a>
-                        </li>
-                        <li><a href="{{ route('account-orders') }}" class="menu-link menu-link_us-s">Orders</a></li>
-                        <li><a href="{{ route('account-address') }}" class="menu-link menu-link_us-s">Addresses</a></li>
-                        <li><a href="{{ route('account-detail') }}" class="menu-link menu-link_us-s">Account Details</a></li>
-                        {{-- <li><a href="account-wishlist.html" class="menu-link menu-link_us-s">Wishlist</a></li> --}}
-                        <li>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            {{ csrf_field() }}
-                            </form>
-                            <a href="{{ route('logout') }}"
-                                onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
-                        </li>
-                    </ul>
-                </div>
+<main class="pt-90">
+    <div class="mb-4 pb-4"></div>
+    <section class="my-account container">
+        {{-- Menggunakan @yield untuk page-title agar bisa diubah di halaman konten --}}
+        <h2 class="page-title">@yield('page_title', 'Account Details')</h2>
+
+        <div class="row">
+            {{-- ASIDE/SIDEBAR (Layout yang Anda ingin selalu sama: col-lg-3) --}}
+            <div class="col-lg-3">
+                <ul class="account-nav">
+                    {{-- Dashboard: Ganti 'account-dashboard' dengan nama route dashboard Anda --}}
+                    <li>
+                        <a href="{{ route('account-dashboard') }}" class="menu-link menu-link_us-s {{ Request::routeIs('account-dashboard') ? 'active' : '' }}">Dashboard</a>
+                    </li>
+                    {{-- Orders: Aktif jika di halaman orders atau order-detail --}}
+                    <li>
+                        <a href="{{ route('account-orders') }}" class="menu-link menu-link_us-s {{ Request::routeIs('account-orders') || Request::routeIs('account-order-detail') ? 'active' : '' }}">Orders</a>
+                    </li>
+                    {{-- Addresses: Aktif jika di halaman addresses atau add-address --}}
+                    <li>
+                        <a href="{{ route('account-address') }}" class="menu-link menu-link_us-s {{ Request::routeIs('account-address') || Request::routeIs('account-add-address') ? 'active' : '' }}">Addresses</a>
+                    </li>
+                    {{-- Account Details: Aktif jika di halaman account-detail --}}
+                    <li>
+                        <a href="{{ route('account-detail') }}" class="menu-link menu-link_us-s {{ Request::routeIs('account-detail') ? 'active' : '' }}">Account Details</a>
+                    </li>
+                    {{-- Review: Tambahkan link Review dan aktifkan jika route-nya 'account-review' --}}
+                    <li>
+                        {{-- <a href="{{ route('account-review') }}" class="menu-link menu-link_us-s {{ Request::routeIs('account-review') ? 'active' : '' }}">Review</a> --}}
+                    </li>
+                    {{-- Logout --}}
+                    <li>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                        <a href="#" class="menu-link menu-link_us-s"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                    </li>
+                </ul>
+            </div>
+
+            {{-- AREA KONTEN (col-lg-9) yang akan diisi oleh @yield('content') --}}
+            <div class="col-lg-9">
                 @yield('content')
-    </main>
+            </div>
+
+        </div> {{-- Tutup div.row --}}
+
+    </section>
+    <div class="mb-5 pb-xl-5"></div>
+</main>
 
     <hr class="mt-5 text-secondary" />
     <footer class="footer footer_type_2">

@@ -1,5 +1,6 @@
 @extends('user.layouts.accounts')
 @section('title','Order Detail')
+@section('page_title', 'Order Details')
 @section('style')
   <style>
     .pt-90 {
@@ -100,7 +101,7 @@
   </style>
 @endsection
 @section('content')
-<div class="col-lg-10">
+
     <div class="wg-box mt-5 mb-5">
         <div class="row">
             <div class="col-6">
@@ -139,6 +140,7 @@
             </table>
         </div>
     </div>
+
     <div class="wg-box wg-table table-all-user">
         <div class="row">
             <div class="col-6">
@@ -227,10 +229,10 @@
             </table>
         </div>
     </div>
-    <div class="divider"></div>
-    <div class="flex items-center justify-between flex-wrap gap10 wgp-pagination">
 
-    </div>
+    <div class="divider"></div>
+
+    <div class="flex items-center justify-between flex-wrap gap10 wgp-pagination"></div>
 
     <div class="wg-box mt-5">
         <h5>Shipping Address</h5>
@@ -284,5 +286,14 @@
             <button type="submit" class="btn btn-danger">Cancel Order</button>
         </form>
     </div>
-</div>
+
+@endsection
+
+@section('script')
+    <script src="{{ asset('build/assets/js/plugins/jquery.min.js') }}"></script>
+    <script src="{{ asset('build/assets/js/plugins/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('build/assets/js/plugins/bootstrap-slider.min.js') }}"></script>
+    <script src="{{ asset('build/assets/js/plugins/swiper.min.js') }}"></script>
+    <script src="{{ asset('build/assets/js/plugins/countdown.js') }}"></script>
+    <script src="{{ asset('build/assets/js/theme.js') }}"></script>
 @endsection
