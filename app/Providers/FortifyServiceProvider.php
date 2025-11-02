@@ -32,7 +32,7 @@ class FortifyServiceProvider extends ServiceProvider
                     return redirect()->route('admin.dashboard');
                 }
                 if ($user->role === 'customer') {
-                    return redirect()->route('account-detail');
+                    return redirect()->route('home');
                 }
                 return redirect()->route('login');
             }
@@ -40,7 +40,7 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->instance(RegisterResponse::class, new class implements RegisterResponse{
             public function toResponse($request)
             {
-                return redirect()->route('account-detail');
+                return redirect()->route('home');
             }
         });
     }

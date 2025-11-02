@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => view('home'))->name('home');
 Route::get('/login', fn() => view('auth.login'))->name('login');
+Route::get('/about', fn()=> view('about'))->name('about');
 
 // ===================
 // ADMIN ROUTES
@@ -137,4 +138,5 @@ Route::middleware(['auth', 'isCustomer'])->group(function () {
     Route::get('/user/account/account-orders-detail', function () {
         return view('user.accounts.account-orders-detail');
     })->name('account-order-detail');
+
 });
