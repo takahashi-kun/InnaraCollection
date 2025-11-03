@@ -17,6 +17,8 @@
     <link rel="apple-touch-icon-precomposed" href="{{ asset('build/assets/images/cropped_circle_image_ico.ico') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('build/admin/assets/css/sweetalert.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('build/admin/assets/css/custom.css') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
 </head>
 
 <body class="body">

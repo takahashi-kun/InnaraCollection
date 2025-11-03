@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => view('home'))->name('home');
 Route::get('/login', fn() => view('auth.login'))->name('login');
-Route::get('/about', fn()=> view('about'))->name('about');
+Route::get('/about', fn() => view('about'))->name('about');
 
 // ===================
 // ADMIN ROUTES
@@ -41,7 +41,7 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::prefix('product')->controller(productController::class)->group(function () {
         Route::get('/', 'index')->name('admin.product');
         Route::get('/create', [productController::class, 'create'])->name('admin.product.create');
-        Route::post('/', [productController::class, 'store'])->name('admin.product.store'); 
+        Route::post('/', [productController::class, 'store'])->name('admin.product.store');
         Route::get('/{product}/edit', [productController::class, 'edit'])->name('admin.product.edit');
         Route::put('/{product}', [productController::class, 'update'])->name('admin.product.update');
         Route::delete('/{product}', [productController::class, 'destroy'])->name('admin.product.destroy');
@@ -127,16 +127,21 @@ Route::middleware(['auth', 'isCustomer'])->group(function () {
         return view('user.accounts.account-address');
     })->name('account-address');
 
-    Route::get('/user/account/account-add-address', function () {
-        return view('user.accounts.account-add-address');
-    })->name('account-add-address');
-
     Route::get('/user/account/account-orders', function () {
         return view('user.accounts.account-orders');
     })->name('account-orders');
+
+    Route::get('/user/account/account-riview', function () {
+        return view('user.accounts.account-review');
+    })->name('account-riview');
 
     Route::get('/user/account/account-orders-detail', function () {
         return view('user.accounts.account-orders-detail');
     })->name('account-order-detail');
 
+    Route::get('/user/account/account-address', [App\Http\Controllers\RajaOngkirController::class, 'showAddresses'])->name('account-address');
+    Route::get('/user/account/account-address/add-address', [App\Http\Controllers\RajaOngkirController::class, 'index'])->name('account-add-address');
+    Route::get('/user/account/account-address/cities/{provinceId}', [App\Http\Controllers\RajaOngkirController::class, 'getCities']);
+    Route::get('/user/account/account-address/districts/{cityId}', [App\Http\Controllers\RajaOngkirController::class, 'getDistricts']);
+    Route::post('/user/account/account-address', [App\Http\Controllers\RajaOngkirController::class, 'store'])->name('account-address.store');
 });
