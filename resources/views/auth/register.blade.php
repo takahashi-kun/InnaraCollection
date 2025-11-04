@@ -64,8 +64,8 @@
               <button class="btn btn-primary w-100 text-uppercase" type="submit">Register</button>
 
               <div class="customer-option mt-4 text-center">
-                <span class="text-secondary">Have an account?</span>
-                <a href="{{ route('login') }}" class="btn-text js-show-register">Login to your Account</a>
+                <span class="text-secondary">Sudah Punya Akun ?</span>
+                <a href="{{ route('login') }}" class="btn-text js-show-register">Login ke akun kamu</a>
               </div>
             </form>
           </div>

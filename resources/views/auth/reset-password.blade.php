@@ -15,14 +15,14 @@
           <div class="form-floating mb-3">
             <input id="newPassword" type="password" class="form-control form-control_gray" name="password" required
               autocomplete="new-password">
-            <label for="newPassword">New Password</label>
+            <label for="newPassword">Password Baru</label>
             {{-- <i class="fa fa-eye-slash toggle-password"></i> --}}
           </div>
 
           <div class="form-floating mb-3">
             <input id="confirmPassword" type="password" class="form-control form-control_gray" name="password_confirmation" required
               autocomplete="new-password">
-            <label for="confirmPassword">Confirm New Password</label>
+            <label for="confirmPassword">Confirm Password Baru</label>
             {{-- <i class="fa fa-eye-slash toggle-password"></i> --}}
           </div>
 

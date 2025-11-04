@@ -27,6 +27,12 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'max:255',
                 Rule::unique('users')->ignore($user->id),
             ],
+            'no_tlp' => [
+                'nullable',
+                'string',
+                'max:15',
+            ],
+            
         ])->validateWithBag('updateProfileInformation');
 
         if ($input['email'] !== $user->email &&
@@ -35,6 +41,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         } else {
             $user->forceFill([
                 'name' => $input['name'],
+                'no_tlp' => $input['no_tlp'],
                 'email' => $input['email'],
             ])->save();
         }
@@ -49,6 +56,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     {
         $user->forceFill([
             'name' => $input['name'],
+            'no_tlp' => $input['no_tlp'],
             'email' => $input['email'],
             'email_verified_at' => null,
         ])->save();
