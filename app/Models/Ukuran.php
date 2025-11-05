@@ -14,7 +14,8 @@ class Ukuran extends Model
 
     protected $fillable = [
         'ukuran',
-        'harga_ukuran'
+        'harga_ukuran',
+        'id_bahan',
     ];
     protected $casts = [
         'harga_ukuran' => 'decimal:2',
@@ -22,5 +23,15 @@ class Ukuran extends Model
     public function kastemisasis()
     {
         return $this->hasMany(ProductKastemisasi::class, 'id_ukuran');
+    }
+
+    public function bahan()
+    {
+        return $this->belongsTo(Bahan::class, 'id_bahan');
+    }
+
+    public function warnas()
+    {
+        return $this->hasMany(Warna::class, 'id_ukuran'); // 1 Ukuran punya banyak Warna
     }
 }

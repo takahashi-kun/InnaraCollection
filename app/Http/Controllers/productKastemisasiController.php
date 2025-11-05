@@ -2,19 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bahan;
+use App\Models\Ukuran;
+use App\Models\Warna;
+use App\Models\Sablon;
 use App\Models\product;
 use App\Models\productKastemisasi;
 use Illuminate\Http\Request;
 
 class productKastemisasiController extends Controller
 {
-        public function index()
+    public function index()
     {
-        // daftar kostumisasi (dengan relasi product) dan daftar produk untuk dropdown
-        $kastemisasis = productKastemisasi::with('product')->get();
+        $kastemisasis = productKastemisasi::with('product', 'bahan', 'ukuran', 'warna', 'sablon')->get(); // Tambahkan eager loading relasi komponen
         $products = product::all();
 
-        return view('admin.product-kastemisasi.product-kastemisasi-add', compact('kastemisasis', 'products'));
+        $bahans = Bahan::all();
+        $ukurans = Ukuran::all();
+        $warnas = Warna::all();
+        $sablons = Sablon::all();
+
+        return view('admin.product-kastemisasi.product-kastemisasi-add', compact(
+            'kastemisasis',
+            'products',
+            'bahans',
+            'ukurans',
+            'warnas',
+            'sablons'
+        ));
     }
 
     // alias create -> tampilkan form yang sama (atau arahkan ke index)
@@ -27,19 +42,22 @@ class productKastemisasiController extends Controller
     {
         $request->validate([
             'produk_id' => 'required|exists:products,id',
-            'jenis_bahan' => 'required|string',
-            'ukuran' => 'required|string',
-            'ketebalan_bahan' => 'required|string',
-            'bahan_sablon' => 'required|string',
-            'warna' => 'required|string',
-            'harga_tambahan' => 'nullable|numeric',
+            'id_bahan' => 'required|exists:bahans,id_bahan',
+            'id_ukuran' => 'required|exists:ukurans,id_ukuran',
+            'id_warna' => 'required|exists:warnas,id_warna',
+            'id_sablon' => 'required|exists:sablons,id_sablon',
+            'total_harga_tambahan' => 'nullable|numeric',
         ]);
         $data = $request->only([
-            'produk_id','jenis_bahan','ukuran','ketebalan_bahan','bahan_sablon','warna','harga_tambahan'
+            'produk_id',
+            'id_bahan',
+            'id_ukuran',
+            'id_warna',
+            'id_sablon',
+            'total_harga_tambahan'
         ]);
-
         productKastemisasi::create($data);
-        return redirect()->back()->with('success','Kostumisasi berhasil disimpan.');
+        return redirect()->back()->with('success', 'Kostumisasi berhasil disimpan.');
     }
 
     // Edit kostumisasi tertentu
@@ -60,7 +78,12 @@ class productKastemisasiController extends Controller
             'harga_tambahan' => 'nullable|integer',
         ]);
         $data = $request->only([
-            'jenis_bahan','ukuran','ketebalan_bahan','bahan_sablon','warna','harga_tambahan'
+            'jenis_bahan',
+            'ukuran',
+            'ketebalan_bahan',
+            'bahan_sablon',
+            'warna',
+            'harga_tambahan'
         ]);
 
         $productKastemisasi->update($data);

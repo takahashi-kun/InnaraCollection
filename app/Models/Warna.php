@@ -16,6 +16,7 @@ class Warna extends Model
         'nama_warna',
         'kode_hex',
         'harga_warna',
+        'id_ukuran',
     ];
     protected $casts = [
         'harga_warna' => 'decimal:2',
@@ -25,5 +26,8 @@ class Warna extends Model
     {
         return $this->hasMany(ProductKastemisasi::class, 'id_warna');
     }
-
+    public function ukuran()
+    {
+        return $this->belongsTo(Ukuran::class, 'id_ukuran');
+    }
 }

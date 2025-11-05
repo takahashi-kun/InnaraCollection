@@ -94,12 +94,9 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
 
     // JASA
     Route::prefix('jasa')->controller(jasaController::class)->group(function () {
-        Route::get('/', 'index')->name('admin.jasa');
-        Route::get('/create', 'create')->name('admin.jasa.create');
-        Route::post('/', 'store')->name('admin.jasa.store');
-        Route::get('/{jasa}/edit', 'edit')->name('admin.jasa.edit');
-        Route::put('/{jasa}', 'update')->name('admin.jasa.update');
-        Route::delete('/{jasa}', 'destroy')->name('admin.jasa.destroy');
+    Route::get('/', 'index')->name('admin.jasa.index');
+    Route::get('/{id_jasa}/edit', 'edit')->name('admin.jasa.edit');
+    Route::put('/{id_jasa}', 'update')->name('admin.jasa.update');
     });
 
     // LAPORAN

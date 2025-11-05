@@ -95,7 +95,7 @@
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
-                                            <a href="{{ route('admin.jasa') }}">
+                                            <a href="{{ route('admin.jasa.index') }}">
                                                 <div class="text">Atur Jasa</div>
                                             </a>
                                         </li>

@@ -63,7 +63,7 @@
             </a>
 
             <div class="logo">
-                <a href="index.html">
+                <a href="{{ route('account-dashboard') }}">
                     <img src="{{ asset('build/assets/images/cropped_circle_image_png.png') }}" alt="Uomo"
                         class="logo__image d-block" />
                 </a>

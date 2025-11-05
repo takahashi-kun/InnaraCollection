@@ -250,15 +250,11 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         </div>
-
-
         <div class="bottom-page">
-            <div class="body-text">Copyright © 2024 SurfsideMedia</div>
+            <div class="body-text">Copyright © 2025 Innara Collection</div>
         </div>
     </div>
 @endsection

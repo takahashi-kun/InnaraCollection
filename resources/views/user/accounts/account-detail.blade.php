@@ -16,9 +16,6 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating my-3">
-                            {{-- <input type="text" class="form-control" placeholder="Nama Lengkap" name="name"
-                                    value="" required>
-                                <label for="name">Nama</label> --}}
                             <input class="form-control form-control_gray " name="name" required="" autocomplete="name"
                                 autofocus="">
                             <label for="name">Name *</label>
@@ -26,9 +23,6 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating my-3">
-                            {{-- <input type="text" class="form-control" placeholder="Nomor Telepon" name="no_tlp"
-                                value="" required="">
-                            <label for="no_tlp">Nomor Telepon</label> --}}
                             <input id="no_tlp" type="text" class="form-control form-control_gray " name="no_tlp"
                                 required="" autocomplete="no_tlp">
                             <label for="no_tlp">No Telephon *</label>
@@ -36,9 +30,6 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating my-3">
-                            {{-- <input type="email" class="form-control" placeholder="Email " name="Email" value=""
-                                required="">
-                            <label for="Email">Email</label> --}}
                             <input id="email" type="email" class="form-control form-control_gray " name="email"
                                 required="" autocomplete="email">
                             <label for="email">Email address *</label>

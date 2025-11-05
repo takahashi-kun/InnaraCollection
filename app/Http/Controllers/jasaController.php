@@ -7,42 +7,32 @@ use App\Models\jasa;
 
 class jasaController extends Controller
 {
-    public function index(){
-        $jasa = jasa::all();
-        return view('admin.jasa.index', compact('jasa'));
+     public function index()
+    {
+        $daftarJasa = Jasa::all();
+        $totalHargaJasa = $daftarJasa->sum('harga_jasa');
+        return view('admin.jasa.index', compact('daftarJasa','totalHargaJasa'));
     }
-    public function create(){
-        return view('admin.jasa.index');
+
+    public function edit($id_jasa)
+    {
+        $editJasa = Jasa::findOrFail($id_jasa);
+        $daftarJasa = Jasa::all();
+        $totalHargaJasa = $daftarJasa->sum('harga_jasa');
+        return view('admin.jasa.index', compact('editJasa','daftarJasa','totalHargaJasa'));
     }
-    public function store(Request $request){
+
+    public function update(Request $request, $id_jasa)
+    {
         $request->validate([
-            'nama_jasa' => 'required|string',
-            'harga_jasa' => 'required|numeric',
+            'harga_jasa' => 'required|numeric|min:0',
         ]);
 
-        jasa::create([
-            'nama_jasa' => $request->nama_jasa,
-            'harga_jasa' => $request->harga_jasa,
-        ]);
-
-        return redirect()->route('admin.jasa')->with('success', 'Jasa berhasil ditambahkan.');
-    }
-    public function edit(jasa $jasa){
-        return view('admin.jasa.index', compact('jasa'));
-    }
-    public function update(Request $request, jasa $jasa){
-        $request->validate([
-            'nama_jasa' => 'required|string',
-            'harga_jasa' => 'required|numeric',
-        ]);
+        $jasa = Jasa::findOrFail($id_jasa);
         $jasa->update([
-            'nama_jasa' => $request->nama_jasa,
             'harga_jasa' => $request->harga_jasa,
         ]);
-        return redirect()->route('admin.jasa')->with('success', 'Jasa berhasil diperbarui.');
-    }
-    public function destroy(jasa $jasa){
-        $jasa->delete();
-        return redirect()->route('admin.jasa')->with('success', 'Jasa berhasil dihapus.');
+
+        return redirect()->route('admin.jasa.index')->with('success', 'Harga jasa berhasil diperbarui.');
     }
 }

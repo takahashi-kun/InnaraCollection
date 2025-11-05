@@ -9,7 +9,7 @@
                 <h3>Users</h3>
                 <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                     <li>
-                        <a href="index.html">
+                        <a href="{{ route('admin.dashboard') }}">
                             <div class="text-tiny">Dashboard</div>
                         </a>
                     </li>
@@ -90,7 +90,7 @@
     </div>
 
     <div class="bottom-page">
-        <div class="body-text">Copyright © 2024 SurfsideMedia</div>
+        <div class="body-text">Copyright © 2025 Innara Collection</div>
     </div>
 </div>
 @endsection

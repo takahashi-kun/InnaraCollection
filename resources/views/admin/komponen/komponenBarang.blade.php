@@ -170,12 +170,17 @@
             background: #f8f9fa;
             font-weight: 600;
         }
+
+        .head {
+            font-size: 2rem;
+            font-weight: bold;
+        }
     </style>
     <div class="main-content">
         <div class="main-content-inner">
             <div class="main-content-wrap">
                 <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-                    <h3>Product Komponen Settings</h3>
+                    <h3 class="head">Product Komponen Settings</h3>
                     <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                         <li>
                             <a href="{{ route('admin.dashboard') }}">
@@ -232,6 +237,17 @@
                             @csrf
                             <div class="wg-box">
                                 <fieldset class="name">
+                                    <div class="body-title mb-10"> Pilih Bahan Induk. <span class="tf-color-1">*</span>
+                                    </div>
+                                    <select name="id_bahan" class="mb-10" required>
+                                        <option value="">-- Pilih Bahan --</option>
+                                        @foreach ($bahans as $bahan)
+                                            <option value="{{ $bahan->id_bahan }}">{{ $bahan->nama_bahan }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="text-tiny">Pilih bahan yang akan memiliki ukuran ini.</div>
+                                </fieldset>
+                                <fieldset class="name">
                                     <div class="body-title mb-10"> Ukuran Baru. <span class="tf-color-1">*</span>
                                     </div>
                                     <input type="text" name="ukuran" class="mb-10" placeholder="Ukuran" required>
@@ -259,6 +275,22 @@
                             action="{{ route('admin.komponen.warna.store') }}">
                             @csrf
                             <div class="wg-box">
+                                <fieldset class="name">
+                                    <div class="body-title mb-10"> Pilih Ukuran Induk. <span class="tf-color-1">*</span>
+                                    </div>
+                                    <select name="id_ukuran" class="mb-10" required>
+                                        <option value="">-- Pilih Ukuran --</option>
+                                        @foreach ($ukurans as $ukuran)
+                                            {{-- Asumsi Anda sudah memperbaiki relasi Bahan di model Ukuran --}}
+                                            <option value="{{ $ukuran->id_ukuran }}">{{ $ukuran->ukuran }}
+                                                @if ($ukuran->bahan)
+                                                    ({{ $ukuran->bahan->nama_bahan }})
+                                                @endif
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="text-tiny">Pilih ukuran yang akan memiliki warna ini.</div>
+                                </fieldset>
                                 <fieldset class="name">
                                     <div class="body-title mb-10"> Warna Baru. <span class="tf-color-1">*</span></div>
                                     <input type="text" name="nama_warna" class="mb-10" placeholder="Nama Warna"
@@ -293,6 +325,17 @@
                             action="{{ route('admin.komponen.sablon.store') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="wg-box">
+                                <fieldset class="name">
+                                    <div class="body-title mb-10"> Pilih Bahan Induk. <span class="tf-color-1">*</span>
+                                    </div>
+                                    <select name="id_bahan" class="mb-10" required>
+                                        <option value="">-- Pilih Bahan --</option>
+                                        @foreach ($bahans as $bahan)
+                                            <option value="{{ $bahan->id_bahan }}">{{ $bahan->nama_bahan }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="text-tiny">Pilih bahan yang akan memiliki jenis sablon ini.</div>
+                                </fieldset>
                                 <fieldset class="name">
                                     <div class="body-title mb-10"> Nama Sablon Baru. <span class="tf-color-1">*</span>
                                     </div>
@@ -536,7 +579,15 @@
                     </tbody>
                 </table>
             </div>
-
+            <div class="wg-box mt-4" style="font-size: 2rem; font-weight: bold;">
+                <div class="flex items-center justify-between">
+                    <h4 class="mb-0">💰 Total Harga Seluruh Komponen</h4>
+                    {{-- Menampilkan total harga dari controller --}}
+                    <h3 class="mb-0 text-primary">
+                        Rp {{ number_format($totalHargaSemuaKomponen ?? 0, 0, ',', '.') }}
+                    </h3>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

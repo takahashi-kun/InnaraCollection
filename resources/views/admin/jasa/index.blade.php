@@ -2,86 +2,96 @@
 @section('title', 'Jasa')
 @section('content')
     <div class="main-content">
-        <style>
-            .table-transaction>tbody>tr:nth-of-type(odd) {
-                --bs-table-accent-bg: #fff !important;
-            }
-        </style>
         <div class="main-content-inner">
-            <div class="main-content-wrap">
-                <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-                    <h3>Jasa</h3>
-                    <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
-                        <li>
-                            <a href="{{ route('admin.dashboard') }}">
-                                <div class="text-tiny">Dashboard</div>
-                            </a>
-                        </li>
-                        <li>
-                            <i class="icon-chevron-right"></i>
-                        </li>
-                        <li>
-                            <div class="text-tiny">Jasa</div>
-                        </li>
-                    </ul>
-                </div>
+            <div class="flex items-center justify-between mb-6">
+                <h3 style="font-size: 2rem; font-weight: bold;">Daftar Jasa</h3>
+                <ul class="breadcrumbs flex items-center gap-2" style="font-size: large">
+                    <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                    <li><i class="icon-chevron-right"></i></li>
+                    <li>Jasa</li>
+                </ul>
+            </div>
 
+            @if (session('success'))
+                <div class="alert alert-success mb-3" style="font-size: large">{{ session('success') }}</div>
+            @endif
+
+            {{-- BAGIAN FORM EDIT (Hanya muncul jika $editJasa ada) --}}
+            @if (isset($editJasa))
                 <div class="wg-box">
-                    <div class="card-form">
-                        <div class="card-title">Edit Jasa</div>
-                        <form class="tf-section-2 form-add-product" style="grid-template-columns: 1fr;" method="POST"
-                            action="{{ route('admin.jasa.update') }}">
-                            @csrf
-                            @method('PUT')
-                            <div class="wg-box">
-                                @foreach ($jasa as $item)
-                                    <fieldset class="name">
-                                        <div class="body-title mb-10">{{ $item->nama_jasa }} <span class="tf-color-1">*</span></div>
-                                        <input type="hidden" name="id_jasa[]" value="{{ $item->id_jasa }}">
-                                        <input type="number" name="harga_jasa[]" class="mb-10"
-                                            placeholder="Harga {{ $item->nama_jasa }}" value="{{ $item->harga_jasa }}" required>
-                                        <div class="text-tiny">Masukkan harga untuk {{ strtolower($item->nama_jasa) }}.</div>
-                                    </fieldset>
-                                @endforeach
-                            </div>
-                            <div class="button-submit">
-                                <button class="tf-button w-full" type="submit">Update Harga Jasa</button>
-                            </div>
-                        </form>
-                    </div>
+                    {{-- Gunakan $editJasa di sini --}}
+                    <form method="POST" action="{{ route('admin.jasa.update', $editJasa->id_jasa) }}">
+                        @csrf
+                        @method('PUT')
 
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered">
-                            <thead>
+                        <div class="form-group mb-4">
+                            <label class="form-label" style="font-size: large">Nama Jasa</label>
+                            {{-- Menggunakan $editJasa --}}
+                            <input type="text" class="form-control" value="{{ $editJasa->nama_jasa }}" disabled>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label class="form-label" style="font-size: large">Harga Jasa</label>
+                            {{-- Menggunakan $editJasa --}}
+                            <input type="number" name="harga_jasa" class="form-control" value="{{ $editJasa->harga_jasa }}"
+                                required>
+                            {{-- Menggunakan $editJasa --}}
+                            <small class="text-muted" style="font-size: large">Masukkan harga baru untuk
+                                {{ strtolower($editJasa->nama_jasa) }}</small>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-full" style="font-size: x-large">Update
+                            Harga</button>
+                    </form>
+                </div>
+            @endif
+            {{-- AKHIR BAGIAN FORM EDIT --}}
+
+
+            {{-- BAGIAN TABEL DAFTAR JASA (Menggunakan $daftarJasa) --}}
+            <div class="wg-box">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID Jasa</th>
+                                <th>Nama Jasa</th>
+                                <th>Harga Jasa</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{-- Pastikan $daftarJasa tersedia dan dapat di-loop. 
+                             Jika route edit diakses, $daftarJasa tidak ada, jadi inisialisasi sebagai array kosong agar tidak error.
+                        --}}
+                            @php
+                                $daftarJasa = $daftarJasa ?? [];
+                            @endphp
+
+                            @foreach ($daftarJasa as $item)
                                 <tr>
-                                    <th>ID Jasa</th>
-                                    <th>Nama Jasa</th>
-                                    <th>Harga Jasa</th>
-                                    <th>Aksi</th>
+                                    <td>{{ $item->id_jasa }}</td>
+                                    <td>{{ $item->nama_jasa }}</td>
+                                    <td>Rp {{ number_format($item->harga_jasa, 0, ',', '.') }}</td>
+                                    <td>
+                                        {{-- Menggunakan $item (dari $daftarJasa) --}}
+                                        <a href="{{ route('admin.jasa.edit', $item->id_jasa) }}"
+                                            class="btn col-md-2 btn-primary btn-xl" style="font-size: large">
+                                            Edit
+                                        </a>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($jasa as $item)
-                                    <tr>
-                                        <td>{{ $item->id_jasa }}</td>
-                                        <td>{{ $item->nama_jasa }}</td>
-                                        <td>Rp {{ number_format($item->harga_jasa, 0, ',', '.') }}</td>
-                                        <td>
-                                            <a href="{{ route('admin.jasa.edit', $item->id_jasa) }}"
-                                                class="btn btn-sm btn-primary">Edit</a>
-                                            <form action="{{ route('admin.jasa.destroy', $item->id_jasa) }}"
-                                                method="POST" style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger"
-                                                    onclick="return confirm('Yakin ingin menghapus jasa ini?')">Hapus</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="wg-box mt-8" style="font-size: 2rem; font-weight: bold;">
+                <div class="flex items-center justify-between">
+                    <h4 class="mb-0">💰 Total Harga Seluruh Jasa</h4>
+                    <h3 class="mb-0 text-primary">
+                        Rp {{ number_format($totalHargaJasa ?? 0, 0, ',', '.') }}
+                    </h3>
                 </div>
             </div>
         </div>

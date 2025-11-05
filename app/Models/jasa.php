@@ -13,7 +13,6 @@ class jasa extends Model
     protected $guarded = [];
     protected $primaryKey = 'id_jasa';
     protected $fillable = [
-        'nama_jasa',
         'harga_jasa',
     ];
     protected $casts = [

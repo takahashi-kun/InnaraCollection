@@ -5,7 +5,7 @@
         <div class="main-content-inner">
             <div class="main-content-wrap">
                 <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-                    <h3>Add New Product</h3>
+                    <h3 style="font-size: 2rem; font-weight: bold;">Add New Product</h3>
                     <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                         <li>
                             <a href="{{ route('admin.dashboard') }}">
@@ -55,7 +55,7 @@
             </div>
         </div>
         <div class="bottom-page">
-            <div class="body-text">Copyright © 2024 SurfsideMedia</div>
+            <div class="body-text">Copyright © 2025 Innara Collection</div>
         </div>
     </div>
 @endsection

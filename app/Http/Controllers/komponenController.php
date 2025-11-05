@@ -19,12 +19,21 @@ class komponenController extends Controller
         $ukurans = Ukuran::all();
         $warnas = Warna::all();
         $sablons = Sablon::all();
+
+        $totalHargaBahan = $bahans->sum('harga_bahan');
+        $totalHargaUkuran = $ukurans->sum('harga_ukuran');
+        $totalHargaWarna = $warnas->sum('harga_warna');
+        $totalHargaSablon = $sablons->sum('harga_sablon');
+
+        $totalHargaSemuaKomponen = $totalHargaBahan + $totalHargaUkuran + $totalHargaWarna + $totalHargaSablon;
         return view('admin.komponen.komponenBarang', compact(
             'bahans',
             'ukurans',
             'warnas',
-            'sablons'
+            'sablons',
+            'totalHargaSemuaKomponen',
         ));
+
     }
 
     public function bahanindex()
@@ -35,7 +44,7 @@ class komponenController extends Controller
     public function ukuranindex()
     {
         $ukuran = Ukuran::all();
-        return view('admin.komponen.komponenBarang', compact('ukuran'));
+        return view('admin.komponen.komponenBarang', compact('ukuran','bahan'));
     }
     public function warnaindex()
     {
@@ -80,6 +89,7 @@ class komponenController extends Controller
     public function ukuranstore(Request $request)
     {
         $request->validate([
+            'id_bahan' => 'required|exists:bahans,id_bahan',
             'ukuran' => 'required',
             'harga_ukuran' => 'required|numeric',
         ]);
@@ -91,6 +101,7 @@ class komponenController extends Controller
     public function warnastore(Request $request)
     {
         $request->validate([
+            'id_ukuran' => 'required|exists:ukurans,id_ukuran',
             'nama_warna' => 'required',
             'kode_hex' => 'required',
             'harga_warna' => 'required|numeric',
@@ -103,6 +114,7 @@ class komponenController extends Controller
     public function sablonstore(Request $request)
     {
         $request->validate([
+            'id_bahan' => 'required|exists:bahans,id_bahan',
             'nama_sablon' => 'required',
             'ukuran_sablon' => 'required',
             'harga_sablon' => 'required|numeric',
@@ -149,6 +161,7 @@ class komponenController extends Controller
     public function ukuranupdate(Request $request, Ukuran $ukuran)
     {
         $request->validate([
+            'id_bahan' => 'required|exists:bahans,id_bahan',
             'ukuran' => 'required',
             'harga_ukuran' => 'required|numeric',
         ]);
@@ -159,6 +172,7 @@ class komponenController extends Controller
     public function warnaupdate(Request $request, Warna $warna)
     {
         $request->validate([
+            'id_ukuran' => 'required|exists:ukurans,id_ukuran',
             'nama_warna' => 'required',
             'kode_hex' => 'required',
             'harga_warna' => 'required|numeric',
@@ -170,6 +184,7 @@ class komponenController extends Controller
     public function sablonupdate(Request $request, Sablon $sablon)
     {
         $request->validate([
+            'id_bahan' => 'required|exists:bahans,id_bahan',
             'nama_sablon' => 'required',
             'ukuran_sablon' => 'required',
             'gambar_sablon' => 'image|mimes:jpeg,png,jpg,svg|max:10800',
