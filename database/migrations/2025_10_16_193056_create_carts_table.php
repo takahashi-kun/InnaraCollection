@@ -14,12 +14,18 @@ return new class extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('id_produk')->constrained('products','id_produk')->onDelete('cascade');
-            $table->string('invoice_number')->unique();
-            $table->decimal('total_harga', 10, 2);
+            $table->json('details_json')->comment('Menyimpan detail kustomisasi kaos');
+
+            $table->string('invoice_number')->nullable(); // Invoice number dibuat saat checkout
+            $table->decimal('total_harga', 10, 2); // Harga per item (harga kustomisasi kaos)
             $table->integer('qty');
             $table->enum('status', [
-                'pending', 'diproses', 'dalam_produksi', 'dikirim', 'selesai', 'dibatalkan'
+                'pending',
+                'diproses',
+                'dalam_produksi',
+                'dikirim',
+                'selesai',
+                'dibatalkan'
             ])->default('pending');
             $table->timestamps();
         });

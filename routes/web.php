@@ -37,6 +37,15 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
         Route::delete('/{productKastemisasi}', 'destroy')->name('admin.product.kastemisasi.destroy');
     });
 
+    Route::prefix('product-kastemisasi')->controller(productKastemisasiController::class)->group(function () {
+        Route::get('/add', 'index')->name('admin.product.kastemisasi.add');
+        Route::post('/', 'store')->name('admin.product.kastemisasi.store');
+        Route::get('/{product}/variants', 'showVariants')->name('admin.product.kastemisasi.show');
+        Route::get('/{productKastemisasi}/edit', 'edit')->name('admin.product.kastemisasi.edit');
+        Route::put('/{productKastemisasi}', 'update')->name('admin.product.kastemisasi.update');
+        Route::delete('/{productKastemisasi}', 'destroy')->name('admin.product.kastemisasi.destroy');
+    });
+
     // PRODUCT
     Route::prefix('product')->controller(productController::class)->group(function () {
         Route::get('/', 'index')->name('admin.product');
@@ -94,9 +103,9 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
 
     // JASA
     Route::prefix('jasa')->controller(jasaController::class)->group(function () {
-    Route::get('/', 'index')->name('admin.jasa.index');
-    Route::get('/{id_jasa}/edit', 'edit')->name('admin.jasa.edit');
-    Route::put('/{id_jasa}', 'update')->name('admin.jasa.update');
+        Route::get('/', 'index')->name('admin.jasa.index');
+        Route::get('/{id_jasa}/edit', 'edit')->name('admin.jasa.edit');
+        Route::put('/{id_jasa}', 'update')->name('admin.jasa.update');
     });
 
     // LAPORAN
@@ -105,12 +114,12 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
 
 Route::middleware(['auth', 'isCustomer'])->group(function () {
 
-    Route::prefix('cart')->group(function () {
-
-        Route::get('/cart', [App\Http\Controllers\cartController::class, 'index'])->name('cart.index');
-        Route::post('/cart/add/{id}', [App\Http\Controllers\cartController::class, 'add'])->name('cart.add');
-        Route::delete('/cart/remove/{id}', [App\Http\Controllers\cartController::class, 'remove'])->name('cart.remove');
-    });
+    Route::middleware(['auth'])->group(function () {
+    Route::get('/cart', [App\Http\Controllers\cartController::class, 'index'])->name('cart.index');
+    Route::post('/cart', [App\Http\Controllers\cartController::class, 'store'])->name('cart.store');
+    Route::put('/cart/{cart}', [App\Http\Controllers\cartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/{cart}', [App\Http\Controllers\cartController::class, 'destroy'])->name('cart.destroy');
+});
 
     Route::get('/user/dashboard', function () {
         return view('user.accounts.account-dashboard');
@@ -119,10 +128,6 @@ Route::middleware(['auth', 'isCustomer'])->group(function () {
     Route::get('/user/account-detail', function () {
         return view('user.accounts.account-detail');
     })->name('account-detail');
-
-    Route::get('/user/account/account-address', function () {
-        return view('user.accounts.account-address');
-    })->name('account-address');
 
     Route::get('/user/account/account-orders', function () {
         return view('user.accounts.account-orders');
@@ -138,7 +143,16 @@ Route::middleware(['auth', 'isCustomer'])->group(function () {
 
     Route::get('/user/account/account-address', [App\Http\Controllers\RajaOngkirController::class, 'showAddresses'])->name('account-address');
     Route::get('/user/account/account-address/add-address', [App\Http\Controllers\RajaOngkirController::class, 'index'])->name('account-add-address');
-    Route::get('/user/account/account-address/cities/{provinceId}', [App\Http\Controllers\RajaOngkirController::class, 'getCities']);
-    Route::get('/user/account/account-address/districts/{cityId}', [App\Http\Controllers\RajaOngkirController::class, 'getDistricts']);
-    Route::post('/user/account/account-address', [App\Http\Controllers\RajaOngkirController::class, 'store'])->name('account-address.store');
+    Route::get('/cities/{provinceId}', [App\Http\Controllers\RajaOngkirController::class, 'getCities']);
+    Route::get('/districts/{cityId}', [App\Http\Controllers\RajaOngkirController::class, 'getDistricts']);
+    Route::get('/user/account/account-address/{id}/edit', [App\Http\Controllers\RajaOngkirController::class, 'edit'])->name('account-address.edit');
+    Route::put('/user/account/account-address/{id}', [App\Http\Controllers\RajaOngkirController::class, 'update'])->name('account-address.update');
+    Route::post('/user/account/account-address/store', [App\Http\Controllers\RajaOngkirController::class, 'store'])->name('account-address.store');
+    Route::post('/check-ongkir', [App\Http\Controllers\RajaOngkirController::class, 'checkOngkir'])->name('checkOngkir');
+
+    Route::get('/shop', function () {
+        return view('user.shop');
+    })->name('shop');
+
+Route::get('/configurator', [App\Http\Controllers\configuratorController::class, 'index'])->name('configurator');
 });

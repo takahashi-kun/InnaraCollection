@@ -1,0 +1,11 @@
+import './admin/assets/js/jquery.min.js';
+import './admin/assets/js/bootstrap.min.js';
+import './admin/assets/js/bootstrap-select.min.js';
+import './admin/assets/js/apexcharts/apexcharts.js';
+import './admin/assets/js/main.js';
+import './assets/js/plugins/jquery.min.js';
+import './assets/js/plugins/bootstrap.bundle.min.js';
+import './assets/js/plugins/bootstrap-slider.min.js';
+import './assets/js/plugins/swiper.min.js';
+import './assets/js/plugins/countdown.js';
+import './assets/js/theme.js';

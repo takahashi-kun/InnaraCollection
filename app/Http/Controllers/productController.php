@@ -26,17 +26,18 @@ class productController extends Controller
         return view('admin.products.product-add');
     }
 
+
     public function store(Request $request)
     {
         $request->validate([
             'nama_produk' => 'required|string',
             'deskripsi'   => 'required|string',
-            'harga'       => 'required|numeric',
             'stok'        => 'required|integer',
             'gambar'      => 'nullable|image|mimes:jpeg,png,jpg,svg|max:10800',
         ]);
 
-        $data = $request->only('nama_produk', 'deskripsi', 'harga', 'stok');
+        $data = $request->only('nama_produk', 'deskripsi', 'stok'); 
+        $data['harga'] = 0; 
 
         if ($request->hasFile('gambar')) {
             $data['gambar'] = $request->file('gambar')->store('products', 'public');
@@ -56,13 +57,12 @@ class productController extends Controller
         $request->validate([
             'nama_produk' => 'required|string',
             'deskripsi'   => 'required|string',
-            'harga'       => 'required|numeric',
             'stok'        => 'required|integer',
             'gambar'      => 'nullable|image|mimes:jpeg,png,jpg,svg|max:10800',
         ]);
 
         // ambil semua data yang boleh diupdate
-        $data = $request->only(['nama_produk', 'deskripsi', 'harga', 'stok']);
+        $data = $request->only(['nama_produk', 'deskripsi', 'stok']);
 
         // cek apakah ada gambar baru
         if ($request->hasFile('gambar')) {

@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class AlamatUser extends Model
 {
     protected $table = 'alamat_users';
+
+    protected $primaryKey = 'id_alamat_user';
     
     protected $fillable = [
         'user_id', 

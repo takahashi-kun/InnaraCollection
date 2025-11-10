@@ -49,12 +49,12 @@
 
 @endsection
 @section('script')
-  <script src="{{ asset ('build/assets/js/plugins/jquery.min.js') }}"></script>
-  <script src="{{ asset ('build/assets/js/plugins/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ asset ('build/assets/js/plugins/bootstrap-slider.min.js') }}"></script>
-  <script src="{{ asset ('build/assets/js/plugins/swiper.min.js') }}"></script>
-  <script src="{{ asset ('build/assets/js/plugins/countdown.js') }}"></script>
-  <script src="{{ asset ('build/assets/js/theme.js') }}"></script>
+  <script src="{{ asset ('build/assets/admin/js/plugins/jquery.min.js') }}"></script>
+  <script src="{{ asset ('build/assets/admin/js/plugins/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset ('build/assets/admin/js/plugins/bootstrap-slider.min.js') }}"></script>
+  <script src="{{ asset ('build/assets/admin/js/plugins/swiper.min.js') }}"></script>
+  <script src="{{ asset ('build/assets/admin/js/plugins/countdown.js') }}"></script>
+  <script src="{{ asset ('build/assets/admin/js/theme.js') }}"></script>
   <script>
         document.querySelectorAll('.toggle-password').forEach(toggle => {
             toggle.addEventListener('click', function() {

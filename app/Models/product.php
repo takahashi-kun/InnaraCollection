@@ -15,10 +15,8 @@ class product extends Model
         'nama_produk',
         'deskripsi',
         'stok',
-        'harga',
     ];
     protected $casts = [
-        'harga' => 'decimal:2',
         'stok' => 'integer',
     ];
 
@@ -44,12 +42,12 @@ class product extends Model
     }
 
     // Method helper untuk mendapatkan gambar sablon
-    public function getDefaultSablonImage()
-    {
-        return $this->kastemisasis()
-            ->with('sablon')
-            ->first()
-            ->sablon
-            ->gambar_sablon ?? null;
-    }
+    // public function getDefaultSablonImage()
+    // {
+    //     return $this->kastemisasis()
+    //         ->with('sablon')
+    //         ->first()
+    //         ->sablon
+    //         ->gambar_sablon ?? null;
+    // }
 }

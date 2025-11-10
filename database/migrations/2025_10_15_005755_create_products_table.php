@@ -16,7 +16,7 @@ return new class extends Migration
             // $table->foreignId('id_kastemisasi')->constrained('product_kastemisasi')->onDelete('cascade')->nullable();
             $table->string('nama_produk');
             $table->text('deskripsi')->nullable();
-            $table->decimal('harga', 10, 2);
+            // $table->decimal('harga', 10, 2)->default('0.00');
             $table->integer('stok');
             $table->timestamps();
         });

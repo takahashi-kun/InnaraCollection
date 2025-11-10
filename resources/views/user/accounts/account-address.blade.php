@@ -5,7 +5,7 @@
 <div class="page-content my-account__address">
     <div class="row mb-3">
         <div class="col-6">
-            <p class="notice">The following addresses will be used on the checkout page by default.</p>
+            <p class="notice">Alamat berikut akan digunakan pada halaman pembayaran.</p>
         </div>
         <div class="col-6 text-right">
             <a href="{{ route('account-add-address') }}" class="btn btn-sm btn-info">Tambah Alamat Baru</a>
@@ -19,7 +19,7 @@
             <div class="my-account__address-item col-md-6 mb-4">
                 <div class="my-account__address-item__title d-flex justify-content-between align-items-center">
                     <h5>{{ $address->nama_penerima }} <i class="fa fa-check-circle text-success"></i></h5>
-                    <a href="#">Edit</a>
+                    <a href="{{ route('account-address.edit',$address->id_alamat_user) }}">Edit</a>
                 </div>
 
                 <div class="my-account__address-item__detail">
@@ -45,10 +45,10 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('build/assets/js/plugins/jquery.min.js') }}"></script>
-    <script src="{{ asset('build/assets/js/plugins/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('build/assets/js/plugins/bootstrap-slider.min.js') }}"></script>
-    <script src="{{ asset('build/assets/js/plugins/swiper.min.js') }}"></script>
-    <script src="{{ asset('build/assets/js/plugins/countdown.js') }}"></script>
-    <script src="{{ asset('build/assets/js/theme.js') }}"></script>
+    <script src="{{ asset('build/assets/admin/js/plugins/jquery.min.js') }}"></script>
+    <script src="{{ asset('build/assets/admin/js/plugins/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('build/assets/admin/js/plugins/bootstrap-slider.min.js') }}"></script>
+    <script src="{{ asset('build/assets/admin/js/plugins/swiper.min.js') }}"></script>
+    <script src="{{ asset('build/assets/admin/js/plugins/countdown.js') }}"></script>
+    <script src="{{ asset('build/assets/admin/js/theme.js') }}"></script>
 @endsection

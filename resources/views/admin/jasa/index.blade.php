@@ -61,9 +61,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- Pastikan $daftarJasa tersedia dan dapat di-loop. 
-                             Jika route edit diakses, $daftarJasa tidak ada, jadi inisialisasi sebagai array kosong agar tidak error.
-                        --}}
                             @php
                                 $daftarJasa = $daftarJasa ?? [];
                             @endphp
@@ -99,9 +96,9 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('build/admin/assets/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('build/admin/assets/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('build/admin/assets/js/bootstrap-select.min.js') }}"></script>
-    <script src="{{ asset('build/admin/assets/js/apexcharts/apexcharts.js') }}"></script>
-    <script src="{{ asset('build/admin/assets/js/main.js') }}"></script>
+    <script src="{{ asset('build/assets/admin2/js/jquery.min.js')}}"></script>
+    <script src="{{ asset('build/assets/admin2/js/bootstrap.min.js')}}"></script>
+    <script src="{{ asset('build/assets/admin2/js/bootstrap-select.min.js')}}"></script>   
+    <script src="{{ asset('build/assets/admin2/js/apexcharts/apexcharts.js')}}"></script>
+    <script src="{{ asset('build/assets/admin2/js/main.js')}}"></script>
 @endsection

@@ -3,7 +3,7 @@
       <div class="header-desk header-desk_type_1">
         <div class="logo">
           <a href="{{ route('home') }}">
-            <img src="{{asset('build/assets/images/cropped_circle_image_png.png')}}" alt="Uomo" class="logo__image d-block" style="width: 80px" />
+            <img src="{{asset('images/cropped_circle_image_png.png')}}" alt="Uomo" class="logo__image d-block" style="width: 80px" />
           </a>
         </div>
 
@@ -13,10 +13,10 @@
               <a href="{{ route('home') }}" class="navigation__link">Home</a>
             </li>
             <li class="navigation__item">
-              <a href="shop.html" class="navigation__link">Shop</a>
+              <a href="{{ route('shop') }}" class="navigation__link">Shop</a>
             </li>
             <li class="navigation__item">
-              <a href="cart.html" class="navigation__link">Cart</a>
+              <a href="{{ route('cart.index') }}" class="navigation__link">Cart</a>
             </li>
             <li class="navigation__item">
               <a href="{{ route('about') }}" class="navigation__link">About</a>
@@ -66,7 +66,7 @@
             </a>
           </div>
 
-          <a href="cart.html" class="header-tools__item header-tools__cart">
+          <a href="{{ route('cart.index') }}" class="header-tools__item header-tools__cart">
             <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
               xmlns="http://www.w3.org/2000/svg">
               <use href="#icon_cart" />

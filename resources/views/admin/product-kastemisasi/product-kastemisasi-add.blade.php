@@ -19,21 +19,18 @@
                     </ul>
                 </div>
 
-                <!-- Form kostumisasi -->
-                {{-- <form class="tf-section-2 form-add-product" method="POST" action="{{ route('admin.customization.store') }}"> --}}
                 <form class="tf-section-2 form-add-product" style="grid-template-columns: 1fr;" method="POST"
-                    action="{{ route('admin.product.store') }}">
+                    action="{{ route('admin.product.kastemisasi.store') }}">
                     @csrf
 
                     <div class="wg-box" style="font-size: initial">
 
-                        {{-- Dropdown produk untuk menghubungkan kastemisasi ke produk tertentu --}}
-                        <fieldset class="produk_id">
+                        <fieldset class="id_produk">
                             <div class="body-title mb-10">Pilih Produk <span class="tf-color-1">*</span></div>
-                            <select name="produk_id" class="mb-10" required>
+                            <select name="id_produk" class="mb-10" required>
                                 <option value="">-- Pilih Produk --</option>
                                 @foreach ($products as $p)
-                                    <option value="{{ $p->id }}">{{ $p->nama_produk }}</option>
+                                    <option value="{{ $p->id_produk }}">{{ $p->nama_produk }}</option>
                                 @endforeach
                             </select>
                             <div class="text-tiny">Pilih produk yang akan diberi opsi kastemisasi.</div>
@@ -60,8 +57,7 @@
                                         {{ number_format($ukuran->harga_ukuran, 0, ',', '.') }}</option>
                                 @endforeach
                             </select>
-                            <div class="text-tiny">Pilih ukuran yang tersedia. (Idealnya ini difilter berdasarkan Bahan yang
-                                dipilih).</div>
+                            <div class="text-tiny">Pilih ukuran yang tersedia.</div>
                         </fieldset>
 
                         <fieldset class="id_sablon">
@@ -73,8 +69,7 @@
                                         {{ number_format($sablon->harga_sablon, 0, ',', '.') }}</option>
                                 @endforeach
                             </select>
-                            <div class="text-tiny">Pilih jenis sablon yang bisa dipilih customer. (Idealnya ini difilter
-                                berdasarkan Bahan yang dipilih).</div>
+                            <div class="text-tiny">Pilih jenis sablon yang bisa dipilih customer.</div>
                         </fieldset>
 
                         <fieldset class="id_warna">
@@ -86,98 +81,27 @@
                                         {{ number_format($warna->harga_warna, 0, ',', '.') }}</option>
                                 @endforeach
                             </select>
-                            <div class="text-tiny">Pilih warna yang tersedia untuk produk ini. (Idealnya ini difilter
-                                berdasarkan Ukuran yang dipilih).</div>
+                            <div class="text-tiny">Pilih warna yang tersedia untuk produk ini.</div>
                         </fieldset>
 
-                        <fieldset class="harga_tambahan">
-                            <div class="body-title mb-10">Harga Tambahan (Biaya Kastemisasi Lain)</div>
-                            <input type="number" name="total_harga_tambahan" class="mb-10"
-                                placeholder="Masukkan tambahan harga (jika ada)">
-                            <div class="text-tiny">Contoh: biaya desain, biaya cetak khusus.</div>
-                        </fieldset>
                         <fieldset>
                             <div class="body-title mb-10"></div>
-                            <button class="tf-button w-full" type="submit">Simpan Opsi Kastemisasi</button>
+                            <button class="tf-button w-full" type="submit">Simpan Varian Kastemisasi</button>
                         </fieldset>
                     </div>
                 </form>
-
-                {{-- Table daftar kastemisasi --}}
-                <div class="mt-5">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Produk</th>
-                                <th>Bahan</th>
-                                <th>Ukuran</th>
-                                <th>Warna</th>
-                                <th>Sablon</th>
-                                <th>Harga Tambahan</th>
-                                <th>Total Harga Komponen</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($kastemisasis as $kastemisasi)
-                                <tr>
-                                    <td>{{ $kastemisasi->product->nama_produk ?? '-' }}</td>
-                                    {{-- Tampilkan data dari relasi --}}
-                                    <td>{{ $kastemisasi->bahan->nama_bahan ?? '-' }}</td>
-                                    <td>{{ $kastemisasi->ukuran->ukuran ?? '-' }}</td>
-                                    <td>{{ $kastemisasi->warna->nama_warna ?? '-' }}</td>
-                                    <td>{{ $kastemisasi->sablon->nama_sablon ?? '-' }}</td>
-                                    <td>Rp {{ number_format($kastemisasi->total_harga_tambahan ?? 0, 0, ',', '.') }}</td>
-
-                                    {{-- Hitung Total Harga Komponen --}}
-                                    @php
-                                        $harga_bahan = $kastemisasi->bahan->harga_bahan ?? 0;
-                                        $harga_ukuran = $kastemisasi->ukuran->harga_ukuran ?? 0;
-                                        $harga_warna = $kastemisasi->warna->harga_warna ?? 0;
-                                        $harga_sablon = $kastemisasi->sablon->harga_sablon ?? 0;
-                                        $harga_tambahan = $kastemisasi->total_harga_tambahan ?? 0;
-                                        $total_komponen =
-                                            $harga_bahan +
-                                            $harga_ukuran +
-                                            $harga_warna +
-                                            $harga_sablon +
-                                            $harga_tambahan;
-                                    @endphp
-                                    <td><b class="text-success">Rp {{ number_format($total_komponen, 0, ',', '.') }}</b>
-                                    </td>
-
-                                    <td>
-                                        {{-- PERBAIKI ROUTE --}}
-                                        <a href="{{ route('admin.product.kastemisasi.edit', $kastemisasi->id_kastemisasi) }}"
-                                            class="btn btn-sm btn-warning">Edit</a>
-                                        <form
-                                            action="{{ route('admin.product.kastemisasi.destroy', $kastemisasi->id_kastemisasi) }}"
-                                            method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-sm btn-danger" type="submit"
-                                                onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="8" class="text-center">Belum ada data kostumisasi.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
 
                 <div class="bottom-page">
                     <div class="body-text">Copyright © 2025 Innara Collection</div>
                 </div>
             </div>
-        @endsection
+        </div>
+    </div>
+@endsection
 
-        @section('script')
-            <script src="{{ asset('build/admin/assets/js/jquery.min.js') }}"></script>
-            <script src="{{ asset('build/admin/assets/js/bootstrap.min.js') }}"></script>
-            <script src="{{ asset('build/admin/assets/js/bootstrap-select.min.js') }}"></script>
-            <script src="{{ asset('build/admin/assets/js/main.js') }}"></script>
-        @endsection
+@section('script')
+    <script src="{{ asset('build/assets/admin2/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('build/assets/admin2/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('build/assets/admin2/js/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('build/assets/admin2/js/main.js') }}"></script>
+@endsection

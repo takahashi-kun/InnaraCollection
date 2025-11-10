@@ -33,11 +33,6 @@
                             <div class="text-tiny">Provide a detailed description of the product.</div>
                         </fieldset>
                         <fieldset class="name">
-                            <div class="body-title mb-10">Price <span class="tf-color-1">*</span></div>
-                            <input type="number" name="harga" class="mb-10" placeholder="Price" required>
-                            <div class="text-tiny">Set the regular price of the product.</div>
-                        </fieldset>
-                        <fieldset class="name">
                             <div class="body-title mb-10">Stok <span class="tf-color-1">*</span></div>
                             <input type="number" name="stok" class="mb-10" placeholder="Stok Barang" min="0" required>
                             <div class="text-tiny">Masukkan Stok Barang.</div>
@@ -60,9 +55,9 @@
     </div>
 @endsection
 @section('script')
-    <script src="{{ asset('build/admin/assets/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('build/admin/assets/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('build/admin/assets/js/bootstrap-select.min.js') }}"></script>
-    <script src="{{ asset('build/admin/assets/js/apexcharts/apexcharts.js') }}"></script>
-    <script src="{{ asset('build/admin/assets/js/main.js') }}"></script>
+    <script src="{{ asset('build/assets/admin2/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('build/assets/admin2/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('build/assets/admin2/js/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('build/assets/admin2/js/apexcharts/apexcharts.js') }}"></script>
+    <script src="{{ asset('build/assets/admin2/js/main.js') }}"></script>
 @endsection

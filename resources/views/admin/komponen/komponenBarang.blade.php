@@ -396,7 +396,7 @@
                 <div class="price-info">
                     @foreach ($ukurans as $ukuran)
                         <div class="price-item">
-                            <div class="price-label">{{ $ukuran->ukuran }}</div>
+                            <div class="price-label"><span>{{ $ukuran->bahan->nama_bahan }} : </span>{{ $ukuran->ukuran }}</div>
                             <div class="price-value">Rp {{ number_format($ukuran->harga_ukuran, 0, ',', '.') }}</div>
                         </div>
                     @endforeach
@@ -409,7 +409,7 @@
                 <div class="price-info">
                     @foreach ($warnas as $warna)
                         <div class="price-item">
-                            <div class="price-label">{{ $warna->nama_warna }}</div>
+                            <div class="price-label"><span>{{ $warna->ukuran->ukuran }} : </span>{{ $warna->nama_warna }}</div>
                             <div class="price-value">Rp {{ number_format($warna->harga_warna, 0, ',', '.') }}</div>
                         </div>
                     @endforeach
@@ -422,7 +422,7 @@
                 <div class="price-info">
                     @foreach ($sablons as $sablon)
                         <div class="price-item">
-                            <div class="price-label">{{ $sablon->nama_sablon }}</div>
+                            <div class="price-label"><span>{{ $sablon->bahan->nama_bahan }} : </span>{{ $sablon->nama_sablon }}</div>
                             <div class="price-value">Rp {{ number_format($sablon->harga_sablon, 0, ',', '.') }}</div>
                         </div>
                     @endforeach
@@ -474,6 +474,7 @@
                 <table class="regular-table">
                     <thead>
                         <tr>
+                            <th>Nama Bahan</th>
                             <th>Ukuran</th>
                             <th>Harga</th>
                             <th>Aksi</th>
@@ -482,6 +483,7 @@
                     <tbody>
                         @foreach ($ukurans as $ukuran)
                             <tr>
+                                <td>{{ $ukuran->bahan->nama_bahan }}</td>
                                 <td>{{ $ukuran->ukuran }}</td>
                                 <td>Rp {{ number_format($ukuran->harga_ukuran, 0, ',', '.') }}</td>
                                 <td>
@@ -506,6 +508,8 @@
                 <table class="regular-table">
                     <thead>
                         <tr>
+                            <th>Nama Bahan</th>
+                            <th>Nama Ukuran</th>
                             <th>Nama Warna</th>
                             <th>Kode HEX</th>
                             <th>Harga</th>
@@ -515,6 +519,8 @@
                     <tbody>
                         @foreach ($warnas as $warna)
                             <tr>
+                                <td>{{ $warna->ukuran->bahan->nama_bahan }}</td>
+                                <td>{{ $warna->ukuran->ukuran }}</td>
                                 <td>{{ $warna->nama_warna }}</td>
                                 <td>{{ $warna->kode_hex }}</td>
                                 <td>Rp {{ number_format($warna->harga_warna, 0, ',', '.') }}</td>
@@ -541,6 +547,7 @@
                 <table class="regular-table">
                     <thead>
                         <tr>
+                            <th>Nama Bahan</th>
                             <th>Nama Sablon</th>
                             <th>Ukuran</th>
                             <th>Harga</th>
@@ -551,6 +558,8 @@
                     <tbody>
                         @foreach ($sablons as $sablon)
                             <tr>
+                                <td>{{ $sablon->bahan->nama_bahan }}</td>
+                                {{-- <td>{{ $kastemisasi->nama_warna }}</td> --}}
                                 <td>{{ $sablon->nama_sablon }}</td>
                                 <td>{{ $sablon->ukuran_sablon }}</td>
                                 <td>Rp {{ number_format($sablon->harga_sablon, 0, ',', '.') }}</td>
@@ -579,22 +588,22 @@
                     </tbody>
                 </table>
             </div>
-            <div class="wg-box mt-4" style="font-size: 2rem; font-weight: bold;">
+            
+            {{-- <div class="wg-box mt-4" style="font-size: 2rem; font-weight: bold;">
                 <div class="flex items-center justify-between">
                     <h4 class="mb-0">💰 Total Harga Seluruh Komponen</h4>
-                    {{-- Menampilkan total harga dari controller --}}
                     <h3 class="mb-0 text-primary">
                         Rp {{ number_format($totalHargaSemuaKomponen ?? 0, 0, ',', '.') }}
                     </h3>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 @endsection
 @section('script')
-    <script src="{{ asset('build/admin/assets/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('build/admin/assets/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('build/admin/assets/js/bootstrap-select.min.js') }}"></script>
-    <script src="{{ asset('build/admin/assets/js/apexcharts/apexcharts.js') }}"></script>
-    <script src="{{ asset('build/admin/assets/js/main.js') }}"></script>
+    <script src="{{ asset('build/assets/admin2/js/jquery.min.js')}}"></script>
+    <script src="{{ asset('build/assets/admin2/js/bootstrap.min.js')}}"></script>
+    <script src="{{ asset('build/assets/admin2/js/bootstrap-select.min.js')}}"></script>   
+    <script src="{{ asset('build/assets/admin2/js/apexcharts/apexcharts.js')}}"></script>
+    <script src="{{ asset('build/assets/admin2/js/main.js')}}"></script>
 @endsection

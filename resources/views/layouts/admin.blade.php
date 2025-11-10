@@ -6,17 +6,17 @@
     <meta charset="utf-8">
     <meta name="author" content="themesflat.com">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" type="text/css" href="{{ asset('build/admin/assets/css/animate.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('build/admin/assets/css/animation.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('build/admin/assets/css/bootstrap.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('build/admin/assets/css/bootstrap-select.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('build/admin/assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('build/admin/assets/font/fonts.css') }}">
-    <link rel="stylesheet" href="{{ asset('build/admin/assets/icon/style.css') }}">
-    <link rel="shortcut icon" href="{{ asset('build/assets/images/cropped_circle_image_ico.ico') }}">
-    <link rel="apple-touch-icon-precomposed" href="{{ asset('build/assets/images/cropped_circle_image_ico.ico') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('build/admin/assets/css/sweetalert.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('build/admin/assets/css/custom.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/assets/admin2/css/animate.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/assets/admin2/css/animation.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/assets/admin2/css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/assets/admin2/css/bootstrap-select.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/assets/admin2/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/assets/admin2/font/fonts.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/assets/admin2/icon/style.css') }}">
+    <link rel="shortcut icon" href="{{ asset('build/assets/admin/images/cropped_circle_image_ico.ico') }}">
+    <link rel="apple-touch-icon-precomposed" href="{{ asset('build/assets/admin/images/cropped_circle_image_ico.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/assets/admin2/css/sweetalert.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('build/assets/admin2/css/custom.css') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
 </head>
@@ -30,7 +30,7 @@
                     <div class="box-logo">
                         <a href="{{ route('admin.dashboard') }}" id="site-logo-inner">
                             <img class="" id="logo_header" alt=""
-                                src="{{ asset('build/assets/images/logopersegi.png') }}"
+                                src="{{ asset('images/logopersegi.png') }}"
                                 data-light="images/logo/logo.png" data-dark="images/logo/logo.png">
                         </a>
                         <div class="button-show-hide">
@@ -164,7 +164,7 @@
                             <div class="header-left">
                                 <a href="{{ route('admin.dashboard') }}">
                                     <img class="" id="logo_header_mobile" alt=""
-                                        src="{{ asset('build/assets/images/logopersegi.png') }}"
+                                        src="{{ asset('images/logopersegi.png') }}"
                                         data-light="images/logo/logo.png" data-dark="images/logo/logo.png"
                                         data-width="154px" data-height="52px" data-retina="images/logo/logo.png">
                                 </a>
@@ -182,140 +182,7 @@
                                     <div class="button-submit">
                                         <button class="" type="submit"><i class="icon-search"></i></button>
                                     </div>
-                                    <div class="box-content-search" id="box-content-search">
-                                        <ul class="mb-24">
-                                            <li class="mb-14">
-                                                <div class="body-title">Top selling product</div>
-                                            </li>
-                                            <li class="mb-14">
-                                                <div class="divider"></div>
-                                            </li>
-                                            <li>
-                                                <ul>
-                                                    <li class="product-item gap14 mb-10">
-                                                        <div class="image no-bg">
-                                                            <img src="{{ asset('build/admin/assets/images/products/17.png') }}"
-                                                                alt="">
-                                                        </div>
-                                                        <div class="flex items-center justify-between gap20 flex-grow">
-                                                            <div class="name">
-                                                                <a href="{{ asset('build/admin/assets/product-list.html') }}"
-                                                                    class="body-text">Dog Food
-                                                                    Rachael Ray Nutrish®</a>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="mb-10">
-                                                        <div class="divider"></div>
-                                                    </li>
-                                                    <li class="product-item gap14 mb-10">
-                                                        <div class="image no-bg">
-                                                            <img src="{{ asset('build/admin/assets/images/products/18.png') }}"
-                                                                alt="">
-                                                        </div>
-                                                        <div class="flex items-center justify-between gap20 flex-grow">
-                                                            <div class="name">
-                                                                <a href="{{ asset('build/admin/assets/product-list.html') }}"
-                                                                    class="body-text">Natural
-                                                                    Dog Food Healthy Dog Food</a>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="mb-10">
-                                                        <div class="divider"></div>
-                                                    </li>
-                                                    <li class="product-item gap14">
-                                                        <div class="image no-bg">
-                                                            <img src="{{ asset('build/admin/assets/images/products/19.png') }}"
-                                                                alt="">
-                                                        </div>
-                                                        <div class="flex items-center justify-between gap20 flex-grow">
-                                                            <div class="name">
-                                                                <a href="{{ asset('build/admin/assets/product-list.html') }}"
-                                                                    class="body-text">Freshpet
-                                                                    Healthy Dog Food and Cat</a>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                        <ul class="">
-                                            <li class="mb-14">
-                                                <div class="body-title">Order product</div>
-                                            </li>
-                                            <li class="mb-14">
-                                                <div class="divider"></div>
-                                            </li>
-                                            <li>
-                                                <ul>
-                                                    <li class="product-item gap14 mb-10">
-                                                        <div class="image no-bg">
-                                                            <img src="{{ asset('build/admin/assets/images/products/20.png') }}"
-                                                                alt="">
-                                                        </div>
-                                                        <div class="flex items-center justify-between gap20 flex-grow">
-                                                            <div class="name">
-                                                                <a href="{{ asset('build/admin/assets/product-list.html') }}"
-                                                                    class="body-text">Sojos
-                                                                    Crunchy Natural Grain Free...</a>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="mb-10">
-                                                        <div class="divider"></div>
-                                                    </li>
-                                                    <li class="product-item gap14 mb-10">
-                                                        <div class="image no-bg">
-                                                            <img src="{{ asset('build/admin/assets/images/products/21.png') }}"
-                                                                alt="">
-                                                        </div>
-                                                        <div class="flex items-center justify-between gap20 flex-grow">
-                                                            <div class="name">
-                                                                <a href="{{ asset('build/admin/assets/product-list.html') }}"
-                                                                    class="body-text">Kristin
-                                                                    Watson</a>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="mb-10">
-                                                        <div class="divider"></div>
-                                                    </li>
-                                                    <li class="product-item gap14 mb-10">
-                                                        <div class="image no-bg">
-                                                            <img src="{{ asset('build/admin/assets/images/products/22.png') }}"
-                                                                alt="">
-                                                        </div>
-                                                        <div class="flex items-center justify-between gap20 flex-grow">
-                                                            <div class="name">
-                                                                <a href="{{ asset('build/admin/assets/product-list.html') }}"
-                                                                    class="body-text">Mega
-                                                                    Pumpkin Bone</a>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="mb-10">
-                                                        <div class="divider"></div>
-                                                    </li>
-                                                    <li class="product-item gap14">
-                                                        <div class="image no-bg">
-                                                            <img src="{{ asset('build/admin/assets/images/products/23.png') }}"
-                                                                alt="">
-                                                        </div>
-                                                        <div class="flex items-center justify-between gap20 flex-grow">
-                                                            <div class="name">
-                                                                <a href="{{ asset('build/admin/assets/product-list.html') }}"
-                                                                    class="body-text">Mega
-                                                                    Pumpkin Bone</a>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
                                 </form>
-
                             </div>
                             <div class="header-grid">
 
@@ -395,7 +262,7 @@
                                             id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
                                             <span class="header-user wg-user">
                                                 <span class="image">
-                                                    <img src="{{ asset('build/admin/assets/images/avatar/user-1.png') }}"
+                                                    <img src="{{ asset('images/avatar/user-1.png') }}"
                                                         alt="">
                                                 </span>
                                                 <span class="flex flex-column">
@@ -429,6 +296,20 @@
                             </div>
                         </div>
                     </div>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
 
                     @yield('content')
 
