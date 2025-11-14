@@ -83,8 +83,8 @@
         <div class="main-content-wrap">
             <div class="flex items-center flex-wrap justify-between gap20 mb-20">
                 <div>
-                    <h3>Cetak Laporan Produk</h3>
-                    <div class="text-tiny">Export atau cetak data produk Innara Collection</div>
+                    <h3 style="font-size: 2rem; font-weight: bold;">Cetak Laporan</h3>
+                    <div class="text-tiny" style="font-size:1.5rem; font-weight: 600;">Cetak data produk Innara Collection</div>
                 </div>
                 <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                     <li><a href="{{ route('admin.dashboard') }}"><div class="text-tiny">Dashboard</div></a></li>
@@ -95,7 +95,7 @@
 
             <div class="report-card">
                 <div class="report-header">
-                    <div class="report-title">Daftar Produk</div>
+                    <div class="report-title">Laporan</div>
                     <div class="report-actions">
                         <a href="#" class="btn btn-print" onclick="window.print(); return false;">Cetak</a>
                         {{-- <a href="{{ route('') }}?export=csv" class="btn btn-export">Export CSV</a> --}}

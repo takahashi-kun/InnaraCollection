@@ -25,6 +25,10 @@
             align-items: center;
             gap: 10px;
         }
+        .btn.btn-large{
+            padding: 10px 15px;
+            font-size: 14px;
+        }
 
         .head {
             font-size: 2rem;
@@ -93,15 +97,15 @@
                                         {{-- <td>Rp {{ number_format($p->harga ?? 0, 0, ',', '.') }}</td> <-- Dihapus Sesuai Permintaan --}}
                                         <td>
                                             <a href="{{ route('admin.product.kastemisasi.show', $p->id_produk) }}"
-                                                class="btn btn-sm btn-info">Lihat Varian</a>
+                                                class="btn btn-large btn-info">Lihat Varian</a>
 
                                             <a href="{{ route('admin.product.edit', $p->id_produk) }}"
-                                                class="btn btn-sm btn-warning">Edit</a>
+                                                class="btn btn-large btn-warning">Edit</a>
                                             <form action="{{ route('admin.product.destroy', $p->id_produk) }}"
                                                 method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-sm btn-danger" type="submit"
+                                                <button class="btn btn-large btn-danger" type="submit"
                                                     onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
                                             </form>
                                         </td>

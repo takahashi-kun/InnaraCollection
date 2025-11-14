@@ -40,14 +40,4 @@ class product extends Model
             'id_sablon' // Local key pada tabel kastemisasi
         );
     }
-
-    // Method helper untuk mendapatkan gambar sablon
-    // public function getDefaultSablonImage()
-    // {
-    //     return $this->kastemisasis()
-    //         ->with('sablon')
-    //         ->first()
-    //         ->sablon
-    //         ->gambar_sablon ?? null;
-    // }
 }

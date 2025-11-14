@@ -3,363 +3,280 @@
 @section('title', 'Dashboard Admin')
 
 @section('content')
+    <style>
+        .main-content {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #f8fbff;
+        }
+
+        .main-content-inner,
+        .main-content-wrap {
+            width: 100%;
+            max-width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .dashboard-container {
+            width: 100%;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        /* ====== SAMBUTAN ====== */
+        .welcome-box {
+            width: 100%;
+            background: linear-gradient(90deg, #4e73df, #1cc88a);
+            color: #fff;
+            border-radius: 10px;
+            padding: 25px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .welcome-box h3 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 3.25rem;
+        }
+
+        .dashp {
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .welcome-icon i {
+            font-size: 45px;
+            opacity: 0.9;
+        }
+
+        /* ====== CARD PESANAN ====== */
+        .wg-chart-default {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px 25px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+            width: 100%;
+        }
+
+        .body-text {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .body-text {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .p-15 {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .ic-bg {
+            background: #f3f4f6;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .icon-shopping-bag {
+            font-size: 22px;
+            color: #4e73df;
+        }
+
+        h4 {
+            font-size: initial;
+        }
+
+        /* ====== FOOTER ====== */
+        .bottom-page {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fc;
+            color: #555;
+            font-size: 14px;
+            border-top: 1px solid #eee;
+            margin-top: 40px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .welcome-box {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .welcome-icon {
+                margin-top: 15px;
+            }
+        }
+    </style>
+
     <div class="main-content">
-
         <div class="main-content-inner">
-
             <div class="main-content-wrap">
-                <div class="tf-section-2 mb-30">
-                    <div class="flex gap20 flex-wrap-mobile">
-                        <div class="w-half">
 
-                            <div class="wg-chart-default mb-20">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap14">
-                                        <div class="image ic-bg">
-                                            <i class="icon-shopping-bag"></i>
-                                        </div>
-                                        <div>
-                                            <div class="body-text mb-2">Total Orders</div>
-                                            <h4>3</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <!-- 🔹 Full Width Container -->
+                <div class="container-fluid dashboard-container">
 
+                    <!-- 🔹 Sambutan -->
+                    <div class="welcome-box">
+                        <div>
+                            <h3>Selamat Datang, <span class="fw-bold">{{ auth()->user()->name }}</span> 👋</h3>
+                            <p class="dashp">Senang bertemu kembali! Semoga harimu menyenangkan dan penuh produktivitas.</p>
+                        </div>
+                        <div class="welcome-icon">
+                            <i class="icon-user"></i>
+                        </div>
+                    </div>
 
-                            <div class="wg-chart-default mb-20">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap14">
-                                        <div class="image ic-bg">
-                                            <i class="icon-dollar-sign"></i>
-                                        </div>
-                                        <div>
-                                            <div class="body-text mb-2">Total Amount</div>
-                                            <h4>481.34</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <!-- 🔹 Statistik (menggunakan grid bootstrap biar rapi & full kanan) -->
+                    <div class="row g-3 mb-4">
 
-
-                            <div class="wg-chart-default mb-20">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap14">
-                                        <div class="image ic-bg">
-                                            <i class="icon-shopping-bag"></i>
-                                        </div>
-                                        <div>
-                                            <div class="body-text mb-2">Pending Orders</div>
-                                            <h4>3</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
+                        <!-- Total Pesanan -->
+                        <div class="col-md-6 col-lg-3">
                             <div class="wg-chart-default">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap14">
-                                        <div class="image ic-bg">
-                                            <i class="icon-dollar-sign"></i>
-                                        </div>
-                                        <div>
-                                            <div class="body-text mb-2">Pending Orders Amount</div>
-                                            <h4>481.34</h4>
-                                        </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="ic-bg">
+                                        <i class="icon-shopping-bag" style="font-size: 32px;"></i>
+                                    </div>
+                                    <div>
+                                        <div class="body-text">Total Pesanan</div>
+                                        <h4>{{ $totalOrders }}</h4>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
 
-                        <div class="w-half">
-
-                            <div class="wg-chart-default mb-20">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap14">
-                                        <div class="image ic-bg">
-                                            <i class="icon-shopping-bag"></i>
-                                        </div>
-                                        <div>
-                                            <div class="body-text mb-2">Delivered Orders</div>
-                                            <h4>0</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="wg-chart-default mb-20">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap14">
-                                        <div class="image ic-bg">
-                                            <i class="icon-dollar-sign"></i>
-                                        </div>
-                                        <div>
-                                            <div class="body-text mb-2">Delivered Orders Amount</div>
-                                            <h4>0.00</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="wg-chart-default mb-20">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap14">
-                                        <div class="image ic-bg">
-                                            <i class="icon-shopping-bag"></i>
-                                        </div>
-                                        <div>
-                                            <div class="body-text mb-2">Canceled Orders</div>
-                                            <h4>0</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
+                        <!-- Pesanan Tertunda -->
+                        <div class="col-md-6 col-lg-3">
                             <div class="wg-chart-default">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap14">
-                                        <div class="image ic-bg">
-                                            <i class="icon-dollar-sign"></i>
-                                        </div>
-                                        <div>
-                                            <div class="body-text mb-2">Canceled Orders Amount</div>
-                                            <h4>0.00</h4>
-                                        </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="ic-bg">
+                                        <i class="icon-clock" style="font-size: 32px;"></i>
+                                    </div>
+                                    <div>
+                                        <div class="body-text">Pesanan Tertunda</div>
+                                        <h4>{{ $pendingOrders }}</h4>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
+                        <!-- Pesanan Terkirim -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="wg-chart-default">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="ic-bg">
+                                        <i class="icon-truck" style="font-size: 32px;"></i>
+                                    </div>
+                                    <div>
+                                        <div class="body-text">Pesanan Terkirim</div>
+                                        <h4>{{ $deliveredOrders }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pesanan Dibatalkan -->
+                        <div class="col-md-6 col-lg-3">
+                            <div class="wg-chart-default">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="ic-bg">
+                                        <i class="icon-x" style="font-size: 32px;"></i>
+                                    </div>
+                                    <div>
+                                        <div class="body-text">Pesanan Dibatalkan</div>
+                                        <h4>{{ $cancelledOrders }}</h4>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
 
-                    <div class="wg-box">
-                        <div class="flex items-center justify-between">
-                            <h5>Earnings revenue</h5>
-                            <div class="dropdown default">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                    <span class="icon-more"><i class="icon-more-horizontal"></i></span>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li>
-                                        <a href="javascript:void(0);">This Week</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);">Last Week</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="flex flex-wrap gap40">
-                            <div>
-                                <div class="mb-2">
-                                    <div class="block-legend">
-                                        <div class="dot t1"></div>
-                                        <div class="text-tiny">Revenue</div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap10">
-                                    <h4>$37,802</h4>
-                                    <div class="box-icon-trending up">
-                                        <i class="icon-trending-up"></i>
-                                        <div class="body-title number">0.56%</div>
-                                    </div>
+                    <div class="tf-section mb-30" style="margin-top: 20px">
+                        <div class="wg-box">
+                            <div class="flex items-center justify-between">
+                                <h5 class="p-15">Recent Orders</h5>
+                                <div class="dropdown default">
+                                    <a class="btn btn-secondary dropdown-toggle" href="#">
+                                        <span class="view-all">View all</span>
+                                    </a>
                                 </div>
                             </div>
-                            <div>
-                                <div class="mb-2">
-                                    <div class="block-legend">
-                                        <div class="dot t2"></div>
-                                        <div class="text-tiny">Order</div>
-                                    </div>
+                            <div class="wg-table table-all-user">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>OrderNo</th>
+                                                <th>Name</th>
+                                                <th class="text-center">Phone</th>
+                                                <th class="text-center">Subtotal</th>
+                                                <th class="text-center">Total</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-center">Order Date</th>
+                                                <th class="text-center">Total Items</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($recentOrders as $order)
+                                                <tr>
+                                                    <td class="text-center">{{ $order->id }}</td>
+                                                    <td class="text-center">{{ $order->user->name }}</td>
+                                                    <td class="text-center">{{ $order->user->no_tlp }}</td>
+                                                    <td class="text-center">Rp{{ number_format($order->subtotal) }}</td>
+                                                    <td class="text-center">Rp{{ number_format($order->total) }}</td>
+
+                                                    <td class="text-center">{{ $order->status }}</td>
+                                                    <td class="text-center">{{ $order->created_at }}</td>
+                                                    <td class="text-center">{{ $order->items->sum('qty') }}</td>
+
+                                                    <td class="text-center">
+                                                        <a href="{{ route('admin.order.show', $order->id) }}">
+                                                            <div class="list-icon-function view-icon">
+                                                                <div class="item eye">
+                                                                    <i class="icon-eye"></i>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="11" class="text-center">Tidak ada order pending.</td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="flex items-center gap10">
-                                    <h4>$28,305</h4>
-                                    <div class="box-icon-trending up">
-                                        <i class="icon-trending-up"></i>
-                                        <div class="body-title number">0.56%</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="line-chart-8"></div>
-                    </div>
-
-                </div>
-                <div class="tf-section mb-30">
-
-                    <div class="wg-box">
-                        <div class="flex items-center justify-between">
-                            <h5>Recent orders</h5>
-                            <div class="dropdown default">
-                                <a class="btn btn-secondary dropdown-toggle" href="#">
-                                    <span class="view-all">View all</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="wg-table table-all-user">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 80px">OrderNo</th>
-                                            <th>Name</th>
-                                            <th class="text-center">Phone</th>
-                                            <th class="text-center">Subtotal</th>
-                                            <th class="text-center">Tax</th>
-                                            <th class="text-center">Total</th>
-
-                                            <th class="text-center">Status</th>
-                                            <th class="text-center">Order Date</th>
-                                            <th class="text-center">Total Items</th>
-                                            <th class="text-center">Delivered On</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="text-center">1</td>
-                                            <td class="text-center">Divyansh Kumar</td>
-                                            <td class="text-center">1234567891</td>
-                                            <td class="text-center">$172.00</td>
-                                            <td class="text-center">$36.12</td>
-                                            <td class="text-center">$208.12</td>
-
-                                            <td class="text-center">ordered</td>
-                                            <td class="text-center">2024-07-11 00:54:14</td>
-                                            <td class="text-center">2</td>
-                                            <td></td>
-                                            <td class="text-center">
-                                                <a href="#">
-                                                    <div class="list-icon-function view-icon">
-                                                        <div class="item eye">
-                                                            <i class="icon-eye"></i>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="bottom-page">
+                    Copyright © 2025 Innara Collection
+                </div>
+
             </div>
         </div>
-        <div class="bottom-page">
-            <div class="body-text">Copyright © 2025 Innara Collection</div>
-        </div>
     </div>
+
 @endsection
 @section('script')
-    <script src="{{ asset('build/assets/admin2/js/jquery.min.js')}}"></script>
-    <script src="{{ asset('build/assets/admin2/js/bootstrap.min.js')}}"></script>
-    <script src="{{ asset('build/assets/admin2/js/bootstrap-select.min.js')}}"></script>   
-    <script src="{{ asset('build/assets/admin2/js/apexcharts/apexcharts.js')}}"></script>
-    <script src="{{ asset('build/assets/admin2/js/main.js')}}"></script>
-    <script>
-        (function ($) {
-
-            var tfLineChart = (function () {
-
-                var chartBar = function () {
-
-                    var options = {
-                        series: [{
-                            name: 'Total',
-                            data: [0.00, 0.00, 0.00, 0.00, 0.00, 273.22, 208.12, 0.00, 0.00, 0.00, 0.00, 0.00]
-                        }, {
-                            name: 'Pending',
-                            data: [0.00, 0.00, 0.00, 0.00, 0.00, 273.22, 208.12, 0.00, 0.00, 0.00, 0.00, 0.00]
-                        },
-                        {
-                            name: 'Delivered',
-                            data: [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]
-                        }, {
-                            name: 'Canceled',
-                            data: [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]
-                        }],
-                        chart: {
-                            type: 'bar',
-                            height: 325,
-                            toolbar: {
-                                show: false,
-                            },
-                        },
-                        plotOptions: {
-                            bar: {
-                                horizontal: false,
-                                columnWidth: '10px',
-                                endingShape: 'rounded'
-                            },
-                        },
-                        dataLabels: {
-                            enabled: false
-                        },
-                        legend: {
-                            show: false,
-                        },
-                        colors: ['#2377FC', '#FFA500', '#078407', '#FF0000'],
-                        stroke: {
-                            show: false,
-                        },
-                        xaxis: {
-                            labels: {
-                                style: {
-                                    colors: '#212529',
-                                },
-                            },
-                            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                        },
-                        yaxis: {
-                            show: false,
-                        },
-                        fill: {
-                            opacity: 1
-                        },
-                        tooltip: {
-                            y: {
-                                formatter: function (val) {
-                                    return "$ " + val + ""
-                                }
-                            }
-                        }
-                    };
-
-                    chart = new ApexCharts(
-                        document.querySelector("#line-chart-8"),
-                        options
-                    );
-                    if ($("#line-chart-8").length > 0) {
-                        chart.render();
-                    }
-                };
-
-                /* Function ============ */
-                return {
-                    init: function () { },
-
-                    load: function () {
-                        chartBar();
-                    },
-                    resize: function () { },
-                };
-            })();
-
-            jQuery(document).ready(function () { });
-
-            jQuery(window).on("load", function () {
-                tfLineChart.load();
-            });
-
-            jQuery(window).on("resize", function () { });
-        })(jQuery);
-    </script>
+    <script src="{{ asset('build/assets/admin2/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('build/assets/admin2/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('build/assets/admin2/js/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('build/assets/admin2/js/apexcharts/apexcharts.js') }}"></script>
+    <script src="{{ asset('build/assets/admin2/js/main.js') }}"></script>
 @endsection

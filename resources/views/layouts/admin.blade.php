@@ -110,15 +110,15 @@
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
-                                            <a href="{{ route('admin.orders') }}">
+                                            <a href="{{ route('admin.order.index') }}">
                                                 <div class="text">Orders</div>
                                             </a>
                                         </li>
-                                        <li class="sub-menu-item">
+                                        {{-- <li class="sub-menu-item">
                                             <a href="{{ route('admin.order-tracking') }}">
                                                 <div class="text">Order Tracking</div>
                                             </a>
-                                        </li>
+                                        </li> --}}
                                     </ul>
                                 </li>
 
@@ -138,12 +138,12 @@
                                 </li>
 
                                 {{-- USER --}}
-                                <li class="menu-item">
+                                {{-- <li class="menu-item">
                                     <a href="{{ route('admin.user') }}">
                                         <div class="icon"><i class="icon-user"></i></div>
                                         <div class="text">User</div>
                                     </a>
-                                </li>
+                                </li> --}}
 
                                 {{-- SETTINGS --}}
                                 <li class="menu-item">

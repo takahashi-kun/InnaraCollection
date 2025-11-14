@@ -38,7 +38,7 @@
                                             $sablonUrl = $item->details_json['sablon']['gambar_sablon'] ?? null;
                                         @endphp
                                         {{-- Jika ada URL sablon, tampilkan sablon. Jika tidak, tampilkan gambar kaos default --}}
-                                        <img src="{{ $sablonUrl ?: asset('images/kaos/default.png') }}" alt="Kaos Custom" class="w-20 h-20 object-contain border rounded-md">
+                                        <img src="{{ $sablonUrl ?: asset('images/kaos/putih.png') }}" alt="Kaos Custom" class="w-20 h-20 object-contain border rounded-md">
                                     </div>
                                     <div>
                                         {{-- Gunakan accessor untuk menampilkan nama varian --}}
@@ -76,7 +76,7 @@
                                     </span>
                                     
                                     {{-- Tombol Hapus --}}
-                                    <form action="{{ route('cart.remove', $item->id) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('cart.destroy', $item->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-link text-red-500 hover:text-red-700 p-0" onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?');">

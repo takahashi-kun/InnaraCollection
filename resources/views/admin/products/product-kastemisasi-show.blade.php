@@ -69,13 +69,13 @@
 
                                     <td>
                                         <a href="{{ route('admin.product.kastemisasi.edit', $kastemisasi->id_kastemisasi) }}"
-                                            class="btn btn-sm btn-warning">Edit</a>
+                                            class="btn btn-XL btn-warning" style="font-size: 16px;">Edit</a>
                                         <form
                                             action="{{ route('admin.product.kastemisasi.destroy', $kastemisasi->id_kastemisasi) }}"
                                             method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="btn btn-sm btn-danger" type="submit"
+                                            <button class="btn btn-XL btn-danger" style="font-size: 16px;" type="submit"
                                                 onclick="return confirm('Yakin ingin menghapus varian ini?')">Hapus</button>
                                         </form>
                                     </td>

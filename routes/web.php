@@ -1,31 +1,27 @@
 <?php
 
+use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\jasaController;
 use App\Http\Controllers\komponenController;
 use App\Http\Controllers\productController;
 use App\Http\Controllers\productKastemisasiController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\cartController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => view('home'))->name('home');
 Route::get('/login', fn() => view('auth.login'))->name('login');
 Route::get('/about', fn() => view('about'))->name('about');
+Route::get('contact', fn() => view('contact'))->name('contact');
 
-// ===================
-// ADMIN ROUTES
-// ===================
 Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
 
     // DASHBOARD
     Route::get('/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
     Route::get('/user', fn() => view('admin.user'))->name('admin.user');
     Route::get('/setting', fn() => view('admin.setting'))->name('admin.setting');
-
-    // ORDERS
-    Route::prefix('order')->group(function () {
-        Route::get('/', fn() => view('admin.order.orders'))->name('admin.orders');
-        Route::get('/detail', fn() => view('admin.order.order-detail'))->name('admin.order-detail');
-        Route::get('/tracking', fn() => view('admin.order.orders-tracking'))->name('admin.order-tracking');
-    });
 
     // PRODUCT KOSTUMISASI
     Route::prefix('product-kastemisasi')->controller(productKastemisasiController::class)->group(function () {
@@ -107,6 +103,17 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
         Route::get('/{id_jasa}/edit', 'edit')->name('admin.jasa.edit');
         Route::put('/{id_jasa}', 'update')->name('admin.jasa.update');
     });
+    // ORDER
+    Route::get('/dashboard', [AdminOrderController::class, 'dashboardOrders'])->name('admin.dashboard');
+    Route::get('/orders', [AdminOrderController::class, 'index'])->name('admin.order.index');
+    Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('admin.order.show');
+    Route::post('/orders/{order}/verify', [AdminOrderController::class, 'verify'])->name('admin.order.verify');
+    Route::post('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('admin.order.updateStatus');
+
+    // PAYMENT
+    // Route::get('/pay/{orderId}', [PaymentController::class, 'pay'])->name('payment.pay');
+    // Route::get('/order/success/{id}', [OrderController::class, 'success'])->name('order.success');
+    // Route::post('/midtrans/callback', [PaymentController::class, 'callback'])->name('payment.callback');
 
     // LAPORAN
     Route::get('/laporan', [productController::class, 'cetakLaporan'])->name('admin.laporan');
@@ -115,11 +122,11 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
 Route::middleware(['auth', 'isCustomer'])->group(function () {
 
     Route::middleware(['auth'])->group(function () {
-    Route::get('/cart', [App\Http\Controllers\cartController::class, 'index'])->name('cart.index');
-    Route::post('/cart', [App\Http\Controllers\cartController::class, 'store'])->name('cart.store');
-    Route::put('/cart/{cart}', [App\Http\Controllers\cartController::class, 'update'])->name('cart.update');
-    Route::delete('/cart/{cart}', [App\Http\Controllers\cartController::class, 'destroy'])->name('cart.destroy');
-});
+        Route::get('/cart', [App\Http\Controllers\cartController::class, 'index'])->name('cart.index');
+        Route::post('/cart', [App\Http\Controllers\cartController::class, 'store'])->name('cart.store');
+        Route::put('/cart/{cart}', [App\Http\Controllers\cartController::class, 'update'])->name('cart.update');
+        Route::delete('/cart/{cart}', [App\Http\Controllers\cartController::class, 'destroy'])->name('cart.destroy');
+    });
 
     Route::get('/user/dashboard', function () {
         return view('user.accounts.account-dashboard');
@@ -129,17 +136,12 @@ Route::middleware(['auth', 'isCustomer'])->group(function () {
         return view('user.accounts.account-detail');
     })->name('account-detail');
 
-    Route::get('/user/account/account-orders', function () {
-        return view('user.accounts.account-orders');
-    })->name('account-orders');
-
     Route::get('/user/account/account-riview', function () {
         return view('user.accounts.account-review');
     })->name('account-riview');
 
-    Route::get('/user/account/account-orders-detail', function () {
-        return view('user.accounts.account-orders-detail');
-    })->name('account-order-detail');
+    Route::get('/account/orders/{order}', [OrderController::class, 'show'])
+        ->name('account-order-detail');
 
     Route::get('/user/account/account-address', [App\Http\Controllers\RajaOngkirController::class, 'showAddresses'])->name('account-address');
     Route::get('/user/account/account-address/add-address', [App\Http\Controllers\RajaOngkirController::class, 'index'])->name('account-add-address');
@@ -148,11 +150,26 @@ Route::middleware(['auth', 'isCustomer'])->group(function () {
     Route::get('/user/account/account-address/{id}/edit', [App\Http\Controllers\RajaOngkirController::class, 'edit'])->name('account-address.edit');
     Route::put('/user/account/account-address/{id}', [App\Http\Controllers\RajaOngkirController::class, 'update'])->name('account-address.update');
     Route::post('/user/account/account-address/store', [App\Http\Controllers\RajaOngkirController::class, 'store'])->name('account-address.store');
+    Route::delete('/user/account/account-address/{id}', [App\Http\Controllers\RajaOngkirController::class, 'destroy'])->name('account-address.destroy');
     Route::post('/check-ongkir', [App\Http\Controllers\RajaOngkirController::class, 'checkOngkir'])->name('checkOngkir');
 
     Route::get('/shop', function () {
         return view('user.shop');
     })->name('shop');
 
-Route::get('/configurator', [App\Http\Controllers\configuratorController::class, 'index'])->name('configurator');
+    Route::get('/cart', [cartController::class, 'index'])->name('cart.index');
+    Route::post('/cart', [cartController::class, 'store'])->name('cart.store');
+    Route::put('/cart/{id}', [cartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/{id}', [cartController::class, 'destroy'])->name('cart.destroy');
+
+    // Checkout routes
+    Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+
+    // Order routes (user view)
+    Route::get('/orders', [OrderController::class, 'index'])->name('account-orders');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('order.show');
+    Route::get('/orders/{order}/invoice', [OrderController::class, 'invoice'])->name('order.invoice');
+
+    Route::get('/configurator', [App\Http\Controllers\configuratorController::class, 'index'])->name('configurator');
 });

@@ -19,9 +19,14 @@ class productKastemisasi extends Model
         'id_bahan',
         'id_ukuran',
         'total_harga_tambahan',
+        'harga_jual',
+        'nama',
+        'meta',
     ];
     protected $casts = [
         'total_harga_tambahan' => 'decimal:2',
+        'harga_jual' => 'decimal:2',
+        'meta' => 'array',
     ];
 
     public function product()

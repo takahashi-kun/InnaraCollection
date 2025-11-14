@@ -242,7 +242,7 @@
                                     <select name="id_bahan" class="mb-10" required>
                                         <option value="">-- Pilih Bahan --</option>
                                         @foreach ($bahans as $bahan)
-                                            <option value="{{ $bahan->id_bahan }}">{{ $bahan->nama_bahan }}</option>
+                                            <option value="{{ $bahan->id_bahan }}">{{ $bahan->nama_bahan }} : {{ $bahan->ketebalan_bahan }}</option>
                                         @endforeach
                                     </select>
                                     <div class="text-tiny">Pilih bahan yang akan memiliki ukuran ini.</div>
@@ -331,7 +331,7 @@
                                     <select name="id_bahan" class="mb-10" required>
                                         <option value="">-- Pilih Bahan --</option>
                                         @foreach ($bahans as $bahan)
-                                            <option value="{{ $bahan->id_bahan }}">{{ $bahan->nama_bahan }}</option>
+                                            <option value="{{ $bahan->id_bahan }}">{{ $bahan->nama_bahan }} ({{ $bahan->ketebalan_bahan }}) </option>
                                         @endforeach
                                     </select>
                                     <div class="text-tiny">Pilih bahan yang akan memiliki jenis sablon ini.</div>
@@ -383,7 +383,7 @@
                 <div class="price-info">
                     @foreach ($bahans as $bahan)
                         <div class="price-item">
-                            <div class="price-label">{{ $bahan->nama_bahan }}</div>
+                            <div class="price-label">{{ $bahan->nama_bahan }} : {{ $bahan->ketebalan_bahan }}</div>
                             <div class="price-value">Rp {{ number_format($bahan->harga_bahan, 0, ',', '.') }}</div>
                         </div>
                     @endforeach
@@ -396,7 +396,9 @@
                 <div class="price-info">
                     @foreach ($ukurans as $ukuran)
                         <div class="price-item">
-                            <div class="price-label"><span>{{ $ukuran->bahan->nama_bahan }} : </span>{{ $ukuran->ukuran }}</div>
+                            <div class="price-label"><span>{{ $ukuran->bahan->nama_bahan }}
+                                    ({{ $ukuran->bahan->ketebalan_bahan }})
+                                    : </span>{{ $ukuran->ukuran }}</div>
                             <div class="price-value">Rp {{ number_format($ukuran->harga_ukuran, 0, ',', '.') }}</div>
                         </div>
                     @endforeach
@@ -409,7 +411,8 @@
                 <div class="price-info">
                     @foreach ($warnas as $warna)
                         <div class="price-item">
-                            <div class="price-label"><span>{{ $warna->ukuran->ukuran }} : </span>{{ $warna->nama_warna }}</div>
+                            <div class="price-label"><span>{{ $warna->ukuran->ukuran }} : </span>{{ $warna->nama_warna }}
+                            </div>
                             <div class="price-value">Rp {{ number_format($warna->harga_warna, 0, ',', '.') }}</div>
                         </div>
                     @endforeach
@@ -422,7 +425,8 @@
                 <div class="price-info">
                     @foreach ($sablons as $sablon)
                         <div class="price-item">
-                            <div class="price-label"><span>{{ $sablon->bahan->nama_bahan }} : </span>{{ $sablon->nama_sablon }}</div>
+                            <div class="price-label"><span>{{ $sablon->bahan->nama_bahan }} :
+                                </span>{{ $sablon->nama_sablon }}</div>
                             <div class="price-value">Rp {{ number_format($sablon->harga_sablon, 0, ',', '.') }}</div>
                         </div>
                     @endforeach
@@ -471,19 +475,38 @@
 
             <div class="table-container">
                 <h4>Data ukuran</h4>
+
+                {{-- Form Pencarian Ukuran --}}
+                <form method="GET" action="{{ url()->current() }}" class="search-form" style="margin-bottom: 15px;">
+                    <div style="display: flex; gap: 10px;">
+                        {{-- Input Search Ukuran --}}
+                        <input type="text" name="search_ukuran" placeholder="Cari Ukuran/Bahan..."
+                            value="{{ request('search_ukuran') }}"
+                            style="flex-grow: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+
+                        {{-- Input tersembunyi untuk mempertahankan halaman warna saat mencari ukuran --}}
+                        @if (request()->has('warna_page'))
+                            <input type="hidden" name="warna_page" value="{{ request('warna_page') }}">
+                        @endif
+
+                        <button type="submit" class="tf-button">Cari</button>
+                        @if (request('search_ukuran'))
+                            {{-- Tombol Reset Search Ukuran --}}
+                            <a href="{{ url()->current() . (request()->has('warna_page') ? '?warna_page=' . request('warna_page') : '') }}"
+                                class="tf-button btn-secondary"
+                                style="background-color: #f8f9fa; color: #333; border: 1px solid #ccc;">Reset</a>
+                        @endif
+                    </div>
+                </form>
+                {{-- End Form Pencarian --}}
+
                 <table class="regular-table">
-                    <thead>
-                        <tr>
-                            <th>Nama Bahan</th>
-                            <th>Ukuran</th>
-                            <th>Harga</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
+                    {{-- ... (Thead dan Tbody Anda) ... --}}
                     <tbody>
                         @foreach ($ukurans as $ukuran)
+                            {{-- ... (Baris data ukuran) ... --}}
                             <tr>
-                                <td>{{ $ukuran->bahan->nama_bahan }}</td>
+                                <td>{{ $ukuran->bahan->nama_bahan }} ({{ $ukuran->bahan->ketebalan_bahan }})</td>
                                 <td>{{ $ukuran->ukuran }}</td>
                                 <td>Rp {{ number_format($ukuran->harga_ukuran, 0, ',', '.') }}</td>
                                 <td>
@@ -501,25 +524,51 @@
                         @endforeach
                     </tbody>
                 </table>
+
+                {{-- Tampilkan Pagination Ukuran --}}
+                <div class="mt-4">
+                    {{-- Menggunakan request()->except('ukuran_page') untuk mempertahankan parameter search dan halaman lain --}}
+                    {{ $ukurans->appends(request()->except('ukuran_page'))->links() }}
+                </div>
+
             </div>
+
 
             <div class="table-container">
                 <h4>Data Warna</h4>
+
+                {{-- Form Pencarian Warna --}}
+                <form method="GET" action="{{ url()->current() }}" class="search-form" style="margin-bottom: 15px;">
+                    <div style="display: flex; gap: 10px;">
+                        {{-- Input Search Warna --}}
+                        <input type="text" name="search_warna" placeholder="Cari Warna/HEX/Ukuran/Bahan..."
+                            value="{{ request('search_warna') }}"
+                            style="flex-grow: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+
+                        {{-- Input tersembunyi untuk mempertahankan halaman ukuran saat mencari warna --}}
+                        @if (request()->has('ukuran_page'))
+                            <input type="hidden" name="ukuran_page" value="{{ request('ukuran_page') }}">
+                        @endif
+
+                        <button type="submit" class="tf-button">Cari</button>
+                        @if (request('search_warna'))
+                            {{-- Tombol Reset Search Warna --}}
+                            <a href="{{ url()->current() . (request()->has('ukuran_page') ? '?ukuran_page=' . request('ukuran_page') : '') }}"
+                                class="tf-button btn-secondary"
+                                style="background-color: #f8f9fa; color: #333; border: 1px solid #ccc;">Reset</a>
+                        @endif
+                    </div>
+                </form>
+                {{-- End Form Pencarian --}}
+
                 <table class="regular-table">
-                    <thead>
-                        <tr>
-                            <th>Nama Bahan</th>
-                            <th>Nama Ukuran</th>
-                            <th>Nama Warna</th>
-                            <th>Kode HEX</th>
-                            <th>Harga</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
+                    {{-- ... (Thead dan Tbody Anda) ... --}}
                     <tbody>
                         @foreach ($warnas as $warna)
+                            {{-- ... (Baris data warna) ... --}}
                             <tr>
-                                <td>{{ $warna->ukuran->bahan->nama_bahan }}</td>
+                                <td>{{ $warna->ukuran->bahan->nama_bahan }} ({{ $warna->ukuran->bahan->ketebalan_bahan }})
+                                </td>
                                 <td>{{ $warna->ukuran->ukuran }}</td>
                                 <td>{{ $warna->nama_warna }}</td>
                                 <td>{{ $warna->kode_hex }}</td>
@@ -540,7 +589,15 @@
                         @endforeach
                     </tbody>
                 </table>
+
+                {{-- Tampilkan Pagination Warna --}}
+                <div class="mt-4">
+                    {{-- Menggunakan request()->except('warna_page') untuk mempertahankan parameter search dan halaman lain --}}
+                    {{ $warnas->appends(request()->except('warna_page'))->links() }}
+                </div>
+
             </div>
+
 
             <div class="table-container">
                 <h4>Data Sablon</h4>
@@ -588,22 +645,22 @@
                     </tbody>
                 </table>
             </div>
-            
-            {{-- <div class="wg-box mt-4" style="font-size: 2rem; font-weight: bold;">
+
+            <div class="wg-box mt-4" style="font-size: 2rem; font-weight: bold;">
                 <div class="flex items-center justify-between">
                     <h4 class="mb-0">💰 Total Harga Seluruh Komponen</h4>
                     <h3 class="mb-0 text-primary">
                         Rp {{ number_format($totalHargaSemuaKomponen ?? 0, 0, ',', '.') }}
                     </h3>
                 </div>
-            </div> --}}
+            </div>
         </div>
     </div>
 @endsection
 @section('script')
-    <script src="{{ asset('build/assets/admin2/js/jquery.min.js')}}"></script>
-    <script src="{{ asset('build/assets/admin2/js/bootstrap.min.js')}}"></script>
-    <script src="{{ asset('build/assets/admin2/js/bootstrap-select.min.js')}}"></script>   
-    <script src="{{ asset('build/assets/admin2/js/apexcharts/apexcharts.js')}}"></script>
-    <script src="{{ asset('build/assets/admin2/js/main.js')}}"></script>
+    <script src="{{ asset('build/assets/admin2/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('build/assets/admin2/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('build/assets/admin2/js/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('build/assets/admin2/js/apexcharts/apexcharts.js') }}"></script>
+    <script src="{{ asset('build/assets/admin2/js/main.js') }}"></script>
 @endsection

@@ -10,7 +10,7 @@
                   </div>
                   <p class="footer-address">Jl. H. Aen Suhendra, Nanjung, Kec. Margaasih, </p>
                   <p class="footer-address"> Kabupaten Bandung, Jawa Barat 40217</p>
-                  <p class="m-0"><strong class="fw-medium">contact@surfsidemedia.in</strong></p>
+                  <p class="m-0"><strong class="fw-medium">InnaraCollection@gmail.com</strong></p>
                   <p><strong class="fw-medium">+1 000-000-0000</strong></p>
 
                   {{-- <ul class="social-links list-unstyled d-flex flex-wrap mb-0">

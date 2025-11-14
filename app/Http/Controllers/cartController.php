@@ -4,166 +4,171 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\cart;
+use App\Models\productKastemisasi;
 use App\Models\product;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 class cartController extends Controller
 {
-    /**
-     * Menampilkan semua item di keranjang pengguna yang sedang login.
-     */
+    use AuthorizesRequests;
+
     public function index()
     {
-        // Pastikan pengguna sudah login
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
         $userId = Auth::id();
-        
-        // Ambil item keranjang berdasarkan user_id dan status pending
-        $cartItems = Cart::where('user_id', $userId)
-            ->where('status', 'pending') 
-            ->get();
-            
-        // Hitung total keseluruhan
+        $cartItems = cart::with('product')->where('user_id', $userId)->get();
+
         $subtotal = $cartItems->sum(function ($item) {
-            // Pastikan total_harga adalah float karena di-cast di Model
-            return $item->total_harga * $item->qty;
+            return ($item->details_json['harga_jual'] ?? ($item->total_harga ?? 0)) * $item->qty;
         });
-        $items = Auth::check()
-            ? cart::where('user_id', Auth::id())->with('product')->get()
-            : cart::with('product')->get(); // sesuaikan untuk session-based cart
 
-
-        // Pastikan kita menggunakan view yang benar: user.carts.cart-index
-        return view('user.cart-index', compact('cartItems', 'subtotal','items'));
+        return view('user.cart-index', compact('cartItems', 'subtotal'));
     }
 
-    /**
-     * Menambahkan item kustomisasi baru ke keranjang.
-     */
-    public function add(Request $request)
-    {
-        // 1. Validasi Input
-        $request->validate([
-            'qty' => 'required|integer|min:1',
-            'bahan' => 'required|array',
-            'ukuran' => 'required|array',
-            'warna' => 'required|array',
-            'sablon' => 'required|array',
-            'total_harga' => 'required|numeric|min:0', // Harga per item
-        ]);
-        
-        if (!Auth::check()) {
-            // Mengembalikan respons 401 Unauthorized jika belum login
-            return response()->json(['success' => false, 'message' => 'Harap login untuk menambahkan ke keranjang.'], 401);
-        }
-
-        $userId = Auth::id();
-
-        // 2. Kumpulkan Detail Kustomisasi
-        // Penting: Data yang disimpan di sini HARUS sama persis dengan yang dikirim dari JS
-        $details = [
-            'bahan' => [
-                'id_bahan' => $request->input('bahan.id_bahan'),
-                'nama_bahan' => $request->input('bahan.nama_bahan'),
-                'harga_bahan' => $request->input('bahan.harga_bahan'),
-            ],
-            'ukuran' => [
-                'id_ukuran' => $request->input('ukuran.id_ukuran'),
-                'ukuran' => $request->input('ukuran.ukuran'),
-                'harga_ukuran' => $request->input('ukuran.harga_ukuran'),
-            ],
-            'warna' => [
-                'id_warna' => $request->input('warna.id_warna'),
-                'nama_warna' => $request->input('warna.nama_warna'),
-                'harga_warna' => $request->input('warna.harga_warna'),
-                'kode_hex' => $request->input('warna.kode_hex'),
-            ],
-            'sablon' => [
-                'id_sablon' => $request->input('sablon.id_sablon'),
-                'nama_sablon' => $request->input('sablon.nama_sablon'),
-                'harga_sablon' => $request->input('sablon.harga_sablon'),
-                'gambar_sablon' => $request->input('sablon.gambar_sablon'), // URL Sablon
-            ],
-        ];
-
-        // 3. Cek apakah varian yang SAMA persis sudah ada di keranjang
-        // Kita menggunakan whereJsonContains untuk mengecek semua detail di atas
-        // Note: whereJsonContains terkadang sensitif, pastikan data yang dikirim dan disimpan konsisten.
-        $existingCartItem = Cart::where('user_id', $userId)
-            ->where('status', 'pending')
-            ->where('total_harga', $request->total_harga) // Filter harga untuk mempermudah pengecekan
-            ->whereJsonContains('details_json', $details)
-            ->first();
-
-        if ($existingCartItem) {
-            // Jika ada, tambahkan kuantitas (QTY)
-            $existingCartItem->qty += $request->qty;
-            $existingCartItem->save();
-            $message = 'Kuantitas item yang sama di keranjang berhasil diperbarui.';
-        } else {
-            // Jika tidak ada, buat item keranjang baru
-            Cart::create([
-                'user_id' => $userId,
-                'total_harga' => $request->total_harga,
-                'qty' => $request->qty,
-                'status' => 'pending', 
-                'details_json' => $details, // Simpan detail kustomisasi
-            ]);
-            $message = 'Item kustomisasi baru berhasil ditambahkan ke keranjang.';
-        }
-
-        // 4. Beri Respons Sukses
-        return response()->json(['success' => true, 'message' => $message]);
-    }
-
-    /**
-     * Menghapus item dari keranjang.
-     */
-    public function remove($id)
-    {
-        $userId = Auth::id();
-
-        $cartItem = Cart::where('user_id', $userId)
-                        ->where('status', 'pending')
-                        ->findOrFail($id);
-        
-        $cartItem->delete();
-
-        return redirect()->route('cart.index')->with('success', 'Item berhasil dihapus dari keranjang.');
-    }
     public function store(Request $request)
     {
         $request->validate([
-            'id_produk' => 'required|exists:products,id_produk',
-            'qty' => 'required|integer|min:1'
+            'id_produk' => 'required',
+            'qty' => 'nullable|integer|min:1',
+            'id_bahan' => 'required',
+            'id_ukuran' => 'required',
+            'id_warna' => 'required',
+            'id_sablon' => 'required',
+            // hidden fields with harga/nama may be strings/numbers
         ]);
 
-        $product = product::find($request->id_produk);
-
+        $userId = Auth::id();
+        $product = product::find($request->input('id_produk'));
         if (!$product) {
-            return back()->withErrors(['Produk tidak ditemukan']);
+            return redirect()->back()->with('error', 'Product tidak ditemukan');
         }
 
-        // optional: cek stok jika kolom stok ada
-        if (isset($product->stok) && $product->stok < $request->qty) {
-            return back()->withErrors(['Stok tidak mencukupi']);
+        $qty = (int) $request->input('qty', 1);
+
+        // Ambil harga dari input hidden (keandalan: controller menerima harga dari view)
+        $bahanHarga = (float) $request->input('bahan_harga', 0);
+        $ukuranHarga = (float) $request->input('ukuran_harga', 0);
+        $warnaHarga = (float) $request->input('warna_harga', 0);
+        $sablonHarga = (float) $request->input('sablon_harga', 0);
+
+        // Jika product punya field harga (coba dua nama umum), gunakan sebagai base
+        $baseHarga = 0;
+        if (isset($product->harga)) $baseHarga = (float) $product->harga;
+        elseif (isset($product->harga_produk)) $baseHarga = (float) $product->harga_produk;
+
+        $hargaJual = $baseHarga + $bahanHarga + $ukuranHarga + $warnaHarga + $sablonHarga;
+
+        // Simpan ke product_kastemisasi (untuk referensi)
+        $kastemisasi = productKastemisasi::create([
+            'id_produk' => $product->id_produk ?? $product->id ?? 2,
+            'id_bahan' => $request->input('id_bahan'),
+            'id_ukuran' => $request->input('id_ukuran'),
+            'id_warna' => $request->input('id_warna'),
+            'id_sablon' => $request->input('id_sablon'),
+            'nama' => ($product->nama_produk ?? ($product->name ?? 'Product')) . ' - Kustom',
+            'harga_jual' => $hargaJual,
+            'meta' => [
+                'bahan' => [
+                    'id' => $request->input('id_bahan'),
+                    'nama' => $request->input('bahan_nama'),
+                    'harga' => $bahanHarga,
+                ],
+                'ukuran' => [
+                    'id' => $request->input('id_ukuran'),
+                    'nama' => $request->input('ukuran_nama'),
+                    'harga' => $ukuranHarga,
+                ],
+                'warna' => [
+                    'id' => $request->input('id_warna'),
+                    'nama' => $request->input('warna_nama'),
+                    'harga' => $warnaHarga,
+                ],
+                'sablon' => [
+                    'id' => $request->input('id_sablon'),
+                    'nama' => $request->input('sablon_nama'),
+                    'harga' => $sablonHarga,
+                ],
+            ]
+        ]);
+
+        // Simpan item ke cart (details_json menyimpan kastemisasi + harga jual)
+        $existing = cart::where('user_id', $userId)
+            ->where('id_produk', $product->id_produk ?? $product->id)
+            ->where('details_json->kastemisasi_id', $kastemisasi->id)
+            ->first();
+
+        if ($existing) {
+            $existing->qty += $qty;
+            $existing->save();
+        } else {
+            cart::create([
+                'user_id' => $userId,
+                'id_produk' => $product->id_produk ?? $product->id,
+                'qty' => $qty,
+                'details_json' => [
+                    'kastemisasi_id' => $kastemisasi->id,
+                    'harga_jual' => $hargaJual,
+                    'meta' => $kastemisasi->meta,
+                ],
+            ]);
+        }
+        // kurangi stok produk 
+        if ($product->stok < $qty) {
+            return redirect()->back()->with('error', 'Stok produk tidak mencukupi.');
         }
 
-        // jika tabel cart menyimpan user_id dan id_produk, qty
-        $cartData = [
-            'id_produk' => $product->id_produk,
-            'qty' => $request->qty,
-        ];
+        $product->stok -= $qty;
+        $product->save();
 
-        if (Auth::check()) {
-            $cartData['user_id'] = Auth::id();
+
+        return redirect()->route('cart.index')->with('success', 'Produk kastemisasi berhasil ditambahkan ke keranjang');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $cartItem = cart::findOrFail($id);
+        $request->validate(['qty' => 'required|integer|min:1']);
+        $newQty = (int)$request->qty;
+        $oldQty = $cartItem->qty;
+
+        $product = product::find($cartItem->id_produk);
+
+        if ($product) {
+            $selisih = $newQty - $oldQty;
+
+            if ($selisih > 0) {
+                // Tambah qty → perlu kurangi stok
+                if ($product->stok < $selisih) {
+                    return back()->with('error', 'Stok tidak mencukupi.');
+                }
+                $product->stok -= $selisih;
+            } else {
+                // Kurangi qty → stok bertambah
+                $product->stok += abs($selisih);
+            }
+
+            $product->save();
         }
 
-        // buat record cart (pastikan model $fillable include fields di atas)
-        $cart = cart::create($cartData);
+        $cartItem->qty = $newQty;
+        $cartItem->save();
 
-        return redirect()->route('cart.index')->with('success', 'Produk ditambahkan ke keranjang');
+        return redirect()->route('cart.index')->with('success', 'Keranjang diperbarui');
+    }
+
+    public function destroy($id)
+    {
+        $cartItem = cart::findOrFail($id);
+        // Ambil produk terkait
+        $product = product::find($cartItem->id_produk);
+
+        if ($product) {
+            // Tambahkan stok kembali
+            $product->stok += $cartItem->qty;
+            $product->save();
+        }
+
+        $cartItem->delete();
+        return redirect()->route('cart.index')->with('success', 'Item dihapus dari keranjang');
     }
 }

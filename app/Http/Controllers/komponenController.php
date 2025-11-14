@@ -13,27 +13,61 @@ class komponenController extends Controller
 {
     use HasFactory;
 
-    public function index()
+    public function index(Request $request)
     {
-        $bahans = Bahan::all();
-        $ukurans = Ukuran::all();
-        $warnas = Warna::all();
-        $sablons = Sablon::all();
+        $ukuranQuery = Ukuran::with('bahan');
 
-        $totalHargaBahan = $bahans->sum('harga_bahan');
-        $totalHargaUkuran = $ukurans->sum('harga_ukuran');
-        $totalHargaWarna = $warnas->sum('harga_warna');
-        $totalHargaSablon = $sablons->sum('harga_sablon');
+    if ($request->filled('search_ukuran')) {
+        $searchTerm = '%' . $request->search_ukuran . '%';
+        $ukuranQuery->where('ukuran', 'like', $searchTerm)
+            ->orWhereHas('bahan', function ($query) use ($searchTerm) {
+                $query->where('nama_bahan', 'like', $searchTerm);
+            });
+    }
+    // Hasil Paginator untuk tampilan
+    $ukurans_display = $ukuranQuery->paginate(10, ['*'], 'ukuran_page');
 
-        $totalHargaSemuaKomponen = $totalHargaBahan + $totalHargaUkuran + $totalHargaWarna + $totalHargaSablon;
-        return view('admin.komponen.komponenBarang', compact(
-            'bahans',
-            'ukurans',
-            'warnas',
-            'sablons',
-            'totalHargaSemuaKomponen',
-        ));
 
+    // --- 2. Warna Pagination & Search Logic ---
+    $warnaQuery = Warna::with('ukuran.bahan');
+
+    if ($request->filled('search_warna')) {
+        $searchTerm = '%' . $request->search_warna . '%';
+        $warnaQuery->where('nama_warna', 'like', $searchTerm)
+            ->orWhere('kode_hex', 'like', $searchTerm)
+            ->orWhereHas('ukuran', function ($query) use ($searchTerm) {
+                $query->where('ukuran', 'like', $searchTerm);
+            })
+            ->orWhereHas('ukuran.bahan', function ($query) use ($searchTerm) {
+                $query->where('nama_bahan', 'like', $searchTerm);
+            });
+    }
+    // Hasil Paginator untuk tampilan
+    $warnas_display = $warnaQuery->paginate(10, ['*'], 'warna_page');
+
+
+    // --- 3. Ambil Data FULL untuk Perhitungan Total (Gunakan nama variabel baru) ---
+    $bahans = Bahan::all();
+    $ukurans_all = Ukuran::all(); // Data Ukuran LENGKAP untuk perhitungan
+    $warnas_all = Warna::all();   // Data Warna LENGKAP untuk perhitungan
+    $sablons = Sablon::all();
+
+    // --- 4. Perhitungan Total (Gunakan variabel _all) ---
+    $totalHargaBahan = $bahans->sum('harga_bahan');
+    $totalHargaUkuran = $ukurans_all->sum('harga_ukuran');
+    $totalHargaWarna = $warnas_all->sum('harga_warna');
+    $totalHargaSablon = $sablons->sum('harga_sablon');
+
+    $totalHargaSemuaKomponen = $totalHargaBahan + $totalHargaUkuran + $totalHargaWarna + $totalHargaSablon;
+    
+    // --- 5. Pass data ke View ---
+    return view('admin.komponen.komponenBarang', [
+        'bahans' => $bahans,
+        'sablons' => $sablons,
+        'totalHargaSemuaKomponen' => $totalHargaSemuaKomponen,
+        'ukurans' => $ukurans_display,
+        'warnas' => $warnas_display,
+    ]);
     }
 
     public function bahanindex()
@@ -44,7 +78,7 @@ class komponenController extends Controller
     public function ukuranindex()
     {
         $ukuran = Ukuran::all();
-        return view('admin.komponen.komponenBarang', compact('ukuran','bahan'));
+        return view('admin.komponen.komponenBarang', compact('ukuran', 'bahan'));
     }
     public function warnaindex()
     {
