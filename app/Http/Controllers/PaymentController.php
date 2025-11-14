@@ -2,76 +2,64 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Midtrans\Snap;
-use Midtrans\Config;
 use App\Models\Order;
+use Illuminate\Http\Request;
+use Midtrans\Config;
+use Midtrans\Snap;
+use Midtrans\Notification;
 
 class PaymentController extends Controller
 {
-    public function pay($orderId)
+    public function __construct()
     {
-        $order = Order::findOrFail($orderId);
-
-        // Konfigurasi Midtrans
         Config::$serverKey = config('services.midtrans.server_key');
         Config::$isProduction = config('services.midtrans.is_production');
         Config::$isSanitized = config('services.midtrans.is_sanitized');
         Config::$is3ds = config('services.midtrans.is_3ds');
+    }
+
+    public function pay($orderId)
+    {
+        $order = Order::with('user')->findOrFail($orderId);
 
         $params = [
             'transaction_details' => [
-                'order_id' => $order->id,
-                'gross_amount' => $order->total,
+                'order_id' => 'ORDER-' . $order->id, // WAJIB unik
+                'gross_amount' => (int) $order->total,
             ],
             'customer_details' => [
                 'first_name' => $order->user->name,
                 'email' => $order->user->email,
                 'phone' => $order->user->no_tlp,
-            ]
+            ],
         ];
 
-        // Generate Snap Token
         $snapToken = Snap::getSnapToken($params);
+
+        // simpan snap_token ke order
+        $order->snap_token = $snapToken;
+        $order->save();
 
         return view('payment.checkout', compact('snapToken', 'order'));
     }
+
+
     public function callback(Request $request)
     {
-        // Set konfigurasi Midtrans
-        Config::$serverKey = config('services.midtrans.server_key');
-        $notif = new \Midtrans\Notification();
+        $notification = new Notification();
 
-        $orderId = $notif->order_id;
-        $transaction = $notif->transaction_status;
-        $fraud = $notif->fraud_status;
+        $orderId = str_replace("ORDER-", "", $notification->order_id);
+        $status = $notification->transaction_status;
+        $fraud = $notification->fraud_status;
 
         $order = Order::find($orderId);
+        if (!$order) return;
 
-        if (!$order) {
-            return response()->json(['message' => 'Order not found'], 404);
-        }
-
-        if ($transaction == 'capture') {
-            if ($fraud == 'challenge') {
-                $order->status = 'challenge';
-            } else {
-                $order->status = 'paid';
-            }
-        } elseif ($transaction == 'settlement') {
-            $order->status = 'paid';
-        } elseif ($transaction == 'pending') {
-            $order->status = 'pending';
-        } elseif ($transaction == 'deny') {
-            $order->status = 'denied';
-        } elseif ($transaction == 'expire') {
-            $order->status = 'expired';
-        } elseif ($transaction == 'cancel') {
-            $order->status = 'canceled';
-        }
+        if ($status == 'capture' && $fraud == 'accept') $order->status = 'paid';
+        elseif ($status == 'settlement') $order->status = 'paid';
+        elseif ($status == 'pending') $order->status = 'pending';
+        elseif (in_array($status, ['deny', 'expire', 'cancel'])) $order->status = 'cancelled';
 
         $order->save();
-
-        return response()->json(['message' => 'Callback processed']);
     }
 }

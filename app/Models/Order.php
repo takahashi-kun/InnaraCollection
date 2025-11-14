@@ -48,4 +48,27 @@ class Order extends Model
             }
         });
     }
+    // public function setStatusPending()
+    // {
+    //     $this->status = 'pending';
+    //     $this->save();
+    // }
+
+    // public function setStatusPaid()
+    // {
+    //     $this->status = 'paid';
+    //     $this->save();
+    // }
+
+    // public function setStatusCancelled()
+    // {
+    //     $this->status = 'cancelled';
+    //     $this->save();
+    // }
+
+    // public function setStatusExpired()
+    // {
+    //     $this->status = 'expired';
+    //     $this->save();
+    // }
 }

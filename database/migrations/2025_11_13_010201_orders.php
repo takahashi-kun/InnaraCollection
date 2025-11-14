@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('total', 16, 2)->default(0);
             $table->string('payment_method')->nullable();
             $table->text('shipping_address')->nullable();
+            $table->string('snap_token')->nullable();
             $table->string('invoice_number')->unique()->after('shipping_address');
             $table->timestamps();
 

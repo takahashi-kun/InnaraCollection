@@ -28,14 +28,14 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        $this->authorize('view', $order);
+
         $order->load('items');
         return view('user.orders.show', compact('order'));
     }
 
     public function invoice(Order $order)
     {
-        $this->authorize('view', $order);
+
         $order->load('items', 'user');
         $pdf = PDF::loadView('user.orders.invoice', compact('order'));
         return $pdf->download("invoice_{$order->id}.pdf");

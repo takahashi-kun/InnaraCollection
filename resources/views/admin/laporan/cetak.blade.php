@@ -1,160 +1,291 @@
-
 @extends('layouts.admin')
-@section('title', 'Cetak Laporan Produk')
+@section('title', 'Cetak Laporan Transaksi')
+
 @section('content')
-<div class="main-content">
+    <div class="main-content">
 
-    <style>
-        /* Card fills available vertical space */
-        .report-card {
-            padding: 24px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 6px 18px rgba(14, 30, 37, 0.06);
-            min-height: calc(100vh - 220px);
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
+        <style>
+            .report-card {
+                padding: 24px;
+                background: #fff;
+                border-radius: 8px;
+                box-shadow: 0 6px 18px rgba(14, 30, 37, 0.06);
+            }
 
-        .report-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
+            .report-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
 
-        .report-title {
-            font-size: 20px;
-            font-weight: 600;
-        }
+            .btn-print {
+                background: #2d8cf0;
+                color: white;
+                padding: 8px 15px;
+                border-radius: 6px;
+            }
 
-        .report-actions .btn {
-            display: inline-block;
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 13px;
-            cursor: pointer;
-            text-decoration: none;
-            color: #fff;
-        }
+            .table-report {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 15px;
+            }
 
-        .btn-print { background: #2d8cf0; }
-        .btn-export { background: #34c38f; }
+            .table-report th,
+            .table-report td {
+                border: 1px solid #e8e8e8;
+                padding: 8px 10px;
+                font-size: 14px;
+            }
 
-        .table-report {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 8px;
-            flex: 1 1 auto;
-            overflow: auto;
-        }
+            .status-success {
+                background: #d6e9c6;
+                padding: 4px 7px;
+                border-radius: 4px;
+            }
 
-        .table-report th, .table-report td {
-            border: 1px solid #e8eaf0;
-            padding: 10px 12px;
-            text-align: left;
-            vertical-align: middle;
-            font-size: 14px;
-        }
+            .status-pending {
+                background: #fcf8e3;
+                padding: 4px 7px;
+                border-radius: 4px;
+            }
 
-        .table-report thead th {
-            background: #fafbff;
-            font-weight: 600;
-        }
+            .status-canceled {
+                background: #f2dede;
+                padding: 4px 7px;
+                border-radius: 4px;
+            }
 
-        .img-thumb {
-            width: 80px;
-            height: auto;
-            object-fit: cover;
-            border-radius: 4px;
-        }
+            @media print {
+                body * {
+                    visibility: hidden;
+                }
 
-        /* Print rules */
-        @media print {
-            body * { visibility: hidden; }
-            .report-card, .report-card * { visibility: visible; }
-            .report-card { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; }
-            .report-actions { display: none; }
-        }
-    </style>
+                .report-card,
+                .report-card * {
+                    visibility: visible;
+                }
 
-    <div class="main-content-inner">
-        <div class="main-content-wrap">
-            <div class="flex items-center flex-wrap justify-between gap20 mb-20">
-                <div>
-                    <h3 style="font-size: 2rem; font-weight: bold;">Cetak Laporan</h3>
-                    <div class="text-tiny" style="font-size:1.5rem; font-weight: 600;">Cetak data produk Innara Collection</div>
-                </div>
-                <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
-                    <li><a href="{{ route('admin.dashboard') }}"><div class="text-tiny">Dashboard</div></a></li>
-                    <li><i class="icon-chevron-right"></i></li>
-                    <li><div class="text-tiny">Laporan</div></li>
-                </ul>
-            </div>
+                .report-card {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                }
 
-            <div class="report-card">
-                <div class="report-header">
-                    <div class="report-title">Laporan</div>
-                    <div class="report-actions">
-                        <a href="#" class="btn btn-print" onclick="window.print(); return false;">Cetak</a>
-                        {{-- <a href="{{ route('') }}?export=csv" class="btn btn-export">Export CSV</a> --}}
+                .filter-box,
+                .btn-print {
+                    display: none !important;
+                }
+            }
+        </style>
+        <style>
+            .filter-section {
+                background: #ffffff;
+                padding: 28px;
+                border-radius: 10px;
+                box-shadow: 0 6px 18px rgba(14, 30, 37, 0.06);
+                margin-bottom: 25px;
+            }
+
+            .filter-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 22px;
+                align-items: end;
+            }
+
+            .filter-group label {
+                font-weight: 600;
+                font-size: 15px;
+                margin-bottom: 5px;
+                display: block;
+            }
+
+            .filter-group input,
+            .filter-group select {
+                width: 100%;
+                padding: 14px 16px;
+                border-radius: 8px;
+                border: 1px solid #d1d5db;
+                font-size: 15px;
+            }
+
+            .filter-actions {
+                margin-top: 12px;
+                display: flex;
+                gap: 12px;
+            }
+
+            .btn-lg {
+                padding: 12px 24px;
+                font-size: 15px;
+                border-radius: 8px;
+                font-weight: 600;
+                border: none;
+                cursor: pointer;
+            }
+
+            .btn-primary {
+                background: #3b82f6;
+                color: white;
+            }
+
+            .btn-primary:hover {
+                background: #2563eb;
+            }
+
+            .btn-secondary {
+                background: #e5e7eb;
+                color: #374151;
+            }
+
+            .btn-secondary:hover {
+                background: #d1d5db;
+            }
+
+            .btn-print {
+                background: #34c38f;
+                color: white;
+            }
+
+            .btn-print:hover {
+                background: #28a578;
+            }
+        </style>
+
+        <div class="main-content-inner">
+
+            <h2 class="text-2xl font-bold mb-4">Cetak Laporan Transaksi</h2>
+
+            {{-- FILTER FORM --}}
+            <div class="filter-section">
+                {{-- <h3 class="text-xl font-bold mb-4" style="font-size: 14px">Filter Laporan Transaksi</h3> --}}
+
+                <form action="{{ route('admin.laporan') }}" method="GET">
+                    <div class="filter-grid">
+
+                        <div class="filter-group">
+                            <label>Filter Berdasarkan</label>
+                            <select name="filter">
+                                <option value="harian" {{ request('filter') == 'harian' ? 'selected' : '' }}>Harian</option>
+                                <option value="bulanan" {{ request('filter') == 'bulanan' ? 'selected' : '' }}>Bulanan
+                                </option>
+                                <option value="tahunan" {{ request('filter') == 'tahunan' ? 'selected' : '' }}>Tahunan
+                                </option>
+                                <option value="range" {{ request('filter') == 'range' ? 'selected' : '' }}>Rentang Tanggal
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label>Tanggal</label>
+                            <input type="date" name="tanggal" value="{{ request('tanggal') }}">
+                        </div>
+
+                        <div class="filter-group">
+                            <label>Bulan</label>
+                            <select name="bulan">
+                                <option value="">Pilih Bulan</option>
+                                @for ($m = 1; $m <= 12; $m++)
+                                    <option value="{{ $m }}" {{ request('bulan') == $m ? 'selected' : '' }}>
+                                        {{ DateTime::createFromFormat('!m', $m)->format('F') }}
+                                    </option>
+                                @endfor
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label>Tahun</label>
+                            <select name="tahun">
+                                <option value="">Pilih Tahun</option>
+                                @for ($y = date('Y'); $y >= 2020; $y--)
+                                    <option value="{{ $y }}" {{ request('tahun') == $y ? 'selected' : '' }}>
+                                        {{ $y }}
+                                    </option>
+                                @endfor
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label>Dari</label>
+                            <input type="date" name="dari" value="{{ request('dari') }}">
+                        </div>
+
+                        <div class="filter-group">
+                            <label>Sampai</label>
+                            <input type="date" name="sampai" value="{{ request('sampai') }}">
+                        </div>
+
                     </div>
-                </div>
 
-                <div style="overflow:auto;">
-                    <table class="table-report">
-                        <thead>
-                            <tr>
-                                <th style="width:60px">No</th>
-                                <th>Nama Produk</th>
-                                <th>Deskripsi</th>
-                                <th style="width:110px">Harga</th>
-                                <th style="width:90px">Stok</th>
-                                <th style="width:120px">Gambar</th>
-                                <th style="width:150px">Dibuat</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($product ?? [] as $idx => $p)
-                                <tr>
-                                    <td>{{ $idx + 1 }}</td>
-                                    <td>{{ $p->nama_produk }}</td>
-                                    <td style="max-width:420px; white-space:pre-wrap;">{{ Str::limit($p->deskripsi ?? '-', 240) }}</td>
-                                    <td>Rp {{ number_format($p->harga ?? 0, 0, ',', '.') }}</td>
-                                    <td>{{ $p->stok ?? 0 }}</td>
-                                    <td>
-                                        @if(!empty($p->gambar))
-                                            <img src="{{ asset('storage/' . $p->gambar) }}" alt="{{ $p->nama_produk }}" class="img-thumb">
-                                        @else
-                                            -
-                                        @endif
-                                    </td>
-                                    <td>{{ $p->created_at?->format('d M Y H:i') ?? '-' }}</td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="7" class="text-center">Belum ada data produk.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                    <div class="filter-actions">
+                        <button class="btn-lg btn-primary" type="submit">Terapkan</button>
 
-                <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:8px;">
-                    <div class="text-tiny">Generated: {{ now()->format('d M Y H:i') }}</div>
-                </div>
+                        <a href="{{ route('admin.laporan') }}" class="btn-lg btn-secondary">Reset</a>
+
+                        <button onclick="window.print()" type="button" class="btn-lg btn-print">
+                            Print
+                        </button>
+                    </div>
+                </form>
             </div>
 
-        </div>
-    </div>
-</div>
-@endsection
+            {{-- REPORT CARD --}}
+            <div class="report-card">
 
-@section('script')
-    <script src="{{ asset('build/assets/admin2/js/jquery.min.js')}}"></script>
-    <script src="{{ asset('build/assets/admin2/js/bootstrap.min.js')}}"></script>
-    <script src="{{ asset('build/assets/admin2/js/bootstrap-select.min.js')}}"></script>   
-    <script src="{{ asset('build/assets/admin2/js/apexcharts/apexcharts.js')}}"></script>
-    <script src="{{ asset('build/assets/admin2/js/main.js')}}"></script>
-@endsection
+                <table class="table-report">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Invoice</th>
+                            <th>Pelanggan</th>
+                            <th>Status</th>
+                            <th>Item</th>
+                            <th>Total</th>
+                            <th>Tanggal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($orders as $i => $order)
+                            <tr>
+                                <td>{{ $i + 1 }}</td>
+                                <td>{{ $order->invoice_number }}</td>
+                                <td>{{ $order->user->name ?? '-' }}</td>
+                                <td>
+                                    @php
+                                        $status = strtolower($order->status);
+                                        $class = match ($status) {
+                                            'paid', 'delivered' => 'status-success',
+                                            'pending' => 'status-pending',
+                                            default => 'status-canceled',
+                                        };
+                                    @endphp
+                                    <span class="{{ $class }}">{{ ucfirst($order->status) }}</span>
+                                </td>
+                                <td>
+                                    <ul>
+                                        @foreach ($order->items as $it)
+                                            <li>{{ $it->qty }}x {{ $it->nama_produk }} – Rp
+                                                {{ number_format($it->price, 0, ',', '.') }}</li>
+                                        @endforeach
+                                    </ul>
+                                </td>
+                                <td>Rp {{ number_format($order->total, 0, ',', '.') }}</td>
+                                <td>{{ $order->created_at->format('d M Y') }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center">Tidak ada data.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+
+                <div class="text-right mt-3 font-bold text-lg">
+                    TOTAL PENJUALAN: Rp {{ number_format($totalSales, 0, ',', '.') }}
+                </div>
+
+            </div>
+        </div>
+    @endsection

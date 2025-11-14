@@ -75,25 +75,22 @@ class CheckoutController extends Controller
             'shipping' => 'required|numeric|min:0'
         ]);
 
-        // Recalculate subtotal & qty server-side (trust server-side values)
+        // hitung ulang subtotal dari server
         $subtotal = $cartItems->sum(function ($item) {
             return ($item->details_json['harga_jual'] ?? 0) * $item->qty;
         });
 
         $totalQty = $cartItems->sum('qty');
 
-        // Optional: recalc shipping on server side to avoid tampering
         $alamatUser = AlamatUser::where('user_id', $userId)->first();
-        $calculatedShipping = $this->calculateShippingCost($alamatUser, $totalQty);
-
-        // If you want to force using server-calculated shipping regardless of client,
-        // overwrite $request->shipping with $calculatedShipping:
-        $shipping = $calculatedShipping;
+        $shipping = $this->calculateShippingCost($alamatUser, $totalQty);
 
         $total = $subtotal + $shipping;
 
         DB::beginTransaction();
+
         try {
+            // Buat order
             $order = Order::create([
                 'user_id' => $userId,
                 'status' => 'pending',
@@ -102,7 +99,6 @@ class CheckoutController extends Controller
                 'total' => $total,
                 'payment_method' => $request->payment_method,
                 'shipping_address' => $request->shipping_address,
-                // if you have invoice_number fill it here (or generate later)
             ]);
 
             foreach ($cartItems as $ci) {
@@ -116,11 +112,21 @@ class CheckoutController extends Controller
                 ]);
             }
 
-            // Kosongkan cart
+            // kosongkan cart
             cart::where('user_id', $userId)->delete();
 
             DB::commit();
-            return redirect()->route('account-orders')->with('success', 'Order berhasil dibuat');
+
+            // ==============================
+            // 🔥 JIKA MEMILIH MIDTRANS
+            // ==============================
+            if ($request->payment_method === 'midtrans') {
+                return redirect()->route('payment.pay', $order->id);
+            }
+
+            // pembayaran manual
+            return redirect()->route('account-orders')
+                ->with('success', 'Order berhasil dibuat');
         } catch (\Throwable $e) {
             DB::rollBack();
             Log::error($e->getMessage());

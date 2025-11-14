@@ -110,13 +110,8 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::post('/orders/{order}/verify', [AdminOrderController::class, 'verify'])->name('admin.order.verify');
     Route::post('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('admin.order.updateStatus');
 
-    // PAYMENT
-    // Route::get('/pay/{orderId}', [PaymentController::class, 'pay'])->name('payment.pay');
-    // Route::get('/order/success/{id}', [OrderController::class, 'success'])->name('order.success');
-    // Route::post('/midtrans/callback', [PaymentController::class, 'callback'])->name('payment.callback');
-
     // LAPORAN
-    Route::get('/laporan', [productController::class, 'cetakLaporan'])->name('admin.laporan');
+    Route::get('/laporan', [AdminOrderController::class, 'cetakLaporan'])->name('admin.laporan');
 });
 
 Route::middleware(['auth', 'isCustomer'])->group(function () {
@@ -162,14 +157,19 @@ Route::middleware(['auth', 'isCustomer'])->group(function () {
     Route::put('/cart/{id}', [cartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/{id}', [cartController::class, 'destroy'])->name('cart.destroy');
 
-    // Checkout routes
-    Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
-    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
-
     // Order routes (user view)
     Route::get('/orders', [OrderController::class, 'index'])->name('account-orders');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('order.show');
     Route::get('/orders/{order}/invoice', [OrderController::class, 'invoice'])->name('order.invoice');
 
+    // Checkout
+    Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+
+    // PAYMENT
+    Route::get('/pay/{orderId}', [PaymentController::class, 'pay'])->name('payment.pay');
+    
+    
     Route::get('/configurator', [App\Http\Controllers\configuratorController::class, 'index'])->name('configurator');
 });
+Route::post('/midtrans/callback', [PaymentController::class, 'callback']);

@@ -266,7 +266,7 @@
                                                         alt="">
                                                 </span>
                                                 <span class="flex flex-column">
-                                                    <span class="body-title mb-2">Kristin Watson</span>
+                                                    <span class="body-title mb-2">{{ auth()->user()->name }}</span>
                                                     <span class="text-tiny">Admin</span>
                                                 </span>
                                             </span>
@@ -281,7 +281,7 @@
                                                     <div class="body-title-2">Account</div>
                                                 </a>
                                             </li>
-                                            <li>
+                                            <li style="font-size: 16px">
                                                 <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                                     style="display: none;">
                                                     {{ csrf_field() }}

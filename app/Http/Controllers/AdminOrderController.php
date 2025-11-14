@@ -27,7 +27,12 @@ class AdminOrderController extends Controller
             ->get();
 
         return view('admin.dashboard', compact(
-            'recentOrders', 'totalOrders', 'pendingOrders', 'deliveredOrders', 'cancelledOrders'));
+            'recentOrders',
+            'totalOrders',
+            'pendingOrders',
+            'deliveredOrders',
+            'cancelledOrders'
+        ));
     }
 
     // ===== HALAMAN DAFTAR ORDER ADMIN =====
@@ -69,5 +74,34 @@ class AdminOrderController extends Controller
         $order->save();
 
         return back()->with('success', 'Status order diperbarui.');
+    }
+    public function cetakLaporan(Request $request)
+    {
+        $filter = $request->filter ?? 'harian';
+
+        $query = Order::with('items', 'user');
+
+        if ($filter === 'harian' && $request->tanggal) {
+            $query->whereDate('created_at', $request->tanggal);
+        }
+
+        if ($filter === 'bulanan' && $request->bulan && $request->tahun) {
+            $query->whereMonth('created_at', $request->bulan)
+                ->whereYear('created_at', $request->tahun);
+        }
+
+        if ($filter === 'tahunan' && $request->tahun) {
+            $query->whereYear('created_at', $request->tahun);
+        }
+
+        if ($filter === 'range' && $request->dari && $request->sampai) {
+            $query->whereBetween('created_at', [$request->dari, $request->sampai]);
+        }
+
+        $orders = $query->orderBy('created_at', 'desc')->get();
+
+        $totalSales = $orders->sum('total');
+
+        return view('admin.laporan.cetak', compact('orders', 'totalSales'));
     }
 }
